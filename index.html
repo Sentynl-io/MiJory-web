@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiJory LLC | Portfolio & Holding Company</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+        :root {
+            --bg-dark: #0B0F19;
+            --bg-panel: #111827;
+            --accent-blue: #00D2FF;
+            --accent-dark: #3A7BD5;
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 5%;
+            background-color: rgba(11, 15, 25, 0.9);
+            position: sticky;
+            top: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--accent-blue);
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-dark));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        header {
+            text-align: center;
+            padding: 8rem 5% 6rem;
+            background: radial-gradient(circle at top, #1a2a42 0%, var(--bg-dark) 70%);
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--accent-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(0, 210, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .highlight {
+            background: -webkit-linear-gradient(0deg, var(--accent-blue), var(--accent-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.hero-sub {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 5rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-panel);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 210, 255, 0.3);
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            flex-grow: 1;
+        }
+
+        .card-link {
+            margin-top: 1.5rem;
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Architecture Section */
+        .architecture {
+            background: var(--bg-panel);
+            padding: 5rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .arch-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .arch-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .arch-content p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .arch-emphasis {
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Diagram Styles */
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .diagram-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .node {
+            background: var(--bg-dark);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            color: var(--text-main);
+            min-width: 220px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .node:hover {
+            background: rgba(0, 210, 255, 0.1);
+            transform: scale(1.05);
+            border-color: var(--accent-blue);
+        }
+
+        .node-center {
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 123, 213, 0.2));
+            border: 2px solid var(--accent-blue);
+            padding: 2rem;
+            font-size: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
+            z-index: 2;
+            cursor: default;
+        }
+
+        .node-center:hover {
+            transform: none;
+            background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 123, 213, 0.2));
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: var(--bg-panel);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 12px;
+            padding: 2.5rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            color: var(--text-main);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+            font-weight: 800;
+            padding-right: 20px;
+        }
+
+        .modal-body {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Contact Form Styles */
+        .contact-intro {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .contact-card {
+            background: rgba(0, 210, 255, 0.05);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            padding: 1.25rem;
+            border-radius: 8px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 210, 255, 0.4);
+        }
+
+        .contact-card h4 {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+        }
+
+        .contact-card p {
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .contact-card a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 5%;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .diagram-container {
+                flex-direction: column;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+
+            .contact-card p {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
+            <span>MiJory LLC</span>
+        </div>
+        <div>
+            <button class="btn open-modal" data-modal="contact"
+                style="padding: 0.5rem 1rem; font-size: 0.875rem;">Contact Team</button>
+        </div>
+    </nav>
+
+    <header>
+        <div class="hero-badge">Incubating Tomorrow's Solutions</div>
+        <h1>Empowering Innovation <br>Across <span class="highlight">Industries</span></h1>
+        <p class="hero-sub">MiJory LLC is a dynamic holding company driving growth and operational excellence across wellness, regulatory technology, and data curation.</p>
+        <a href="#portfolio" class="btn">Explore Our Portfolio</a>
+    </header>
+
+    <section id="portfolio" class="features">
+        <h2 class="section-title">The MiJory Portfolio</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Right Roots</h3>
+                <p>Bringing premium, natural wellness to consumers through high-quality Kava sales. Dedicated to honoring traditional roots while providing modern, accessible products.</p>
+                <a href="https://kavakazees.com/" target="_blank" class="card-link">Visit Kavakazees &rarr;</a>
+            </div>
+            <div class="card">
+                <h3>Biotide</h3>
+                <p>Pioneering the future of healthspan. Biotide merges advanced peptide sales with cutting-edge longevity wellness franchise clinics to optimize human performance and wellness.</p>
+                <a href="#" class="card-link open-modal" data-modal="biotide">Learn More &rarr;</a>
+            </div>
+            <div class="card">
+                <h3>TrakPath</h3>
+                <p>The intelligence layer for global trade. TrakPath utilizes a dynamic identifier hydration engine to solve the $184B supply chain data gap with append-only provenance.</p>
+                <a href="#" class="card-link open-modal" data-modal="trakpath">Explore Technology &rarr;</a>
+            </div>
+            <div class="card">
+                <h3>Sentynl</h3>
+                <p>Advanced data curation platform designed to structure, secure, and analyze high-volume data streams, empowering enterprises to make intelligent, real-time decisions.</p>
+                <a href="#" class="card-link open-modal" data-modal="sentynl">Discover Sentynl &rarr;</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="architecture">
+        <div class="arch-content">
+            <h2>A Unified Ecosystem</h2>
+            <p>While our portfolio spans diverse sectors—from biotechnology and holistic wellness to enterprise software and data management—each entity benefits from the shared strategic vision, operational support, and technical infrastructure provided by MiJory LLC.</p>
+            <p class="arch-emphasis">Click a subsidiary below to view details.</p>
+
+            <div class="diagram-container">
+                <div class="diagram-column">
+                    <button class="node open-modal" data-modal="rightroots">🌿 Right Roots</button>
+                    <button class="node open-modal" data-modal="biotide">🧬 Biotide</button>
+                </div>
+
+                <div class="node node-center">
+                    MiJory LLC<br>
+                    <span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);">Holding & Incubation</span>
+                </div>
+
+                <div class="diagram-column">
+                    <button class="node open-modal" data-modal="trakpath">🔗 TrakPath</button>
+                    <button class="node open-modal" data-modal="sentynl">📊 Sentynl</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>2026 MiJory LLC. All rights reserved.</p>
+        <p>Meridian, Idaho | Transforming Data, Wellness, and Technology.</p>
+    </footer>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <h3 class="modal-title" id="modalTitle">Title</h3>
+            <div class="modal-body" id="modalBody">Body content goes here.</div>
+        </div>
+    </div>
+
+    <script>
+        const modalData = {
+            contact: {
+                title: "MiJory Executive Team",
+                body: `<p class="contact-intro">Reach out to the MiJory LLC executive team to discuss our portfolio companies, investment opportunities, or strategic partnerships.</p>
+                       <div class="contact-grid">
+                           <div class="contact-card">
+                               <h4>Josh McIver</h4>
+                               <p>Email: <a href="mailto:josh@mijory.com">josh@mijory.com</a></p>
+                               <p>Phone: <a href="tel:+12089008666">(208) 900-8666</a></p>
+                               <p>Location: <span>Meridian, ID</span></p>
+                           </div>
+                           <div class="contact-card">
+                               <h4>Ryan Pacheco</h4>
+                               <p>Email: <a href="mailto:ryan@mijory.com">ryan@mijory.com</a></p>
+                               <p>Phone: <a href="tel:+12089954681">(208) 995-4681</a></p>
+                               <p>Location: <span>Meridian, ID</span></p>
+                           </div>
+                           <div class="contact-card">
+                               <h4>Mike Larsen</h4>
+                               <p>Email: <a href="mailto:mike@mijory.com">mike@mijory.com</a></p>
+                               <p>Phone: <a href="tel:+12087035465">(208) 703-5465</a></p>
+                               <p>Location: <span>Meridian, ID</span></p>
+                           </div>
+                           <div class="contact-card">
+                               <h4>Gaby Larsen</h4>
+                               <p>Email: <a href="mailto:gaby@mijory.com">gaby@mijory.com</a></p>
+                               <p>Phone: <a href="tel:+12086020894">(208) 602-0894</a></p>
+                               <p>Location: <span>Meridian, ID</span></p>
+                           </div>
+                       </div>`
+            },
+            rightroots: {
+                title: "🌿 Right Roots",
+                body: "Right Roots operates in the holistic wellness space, specializing in premium Kava sales through consumer brand, Kavakazees. We focus on ethical sourcing and high-quality extracts to promote natural relaxation and wellness."
+            },
+            biotide: {
+                title: "🧬 Biotide",
+                body: "Biotide operates at the intersection of biotechnology and proactive healthcare. We offer direct peptide sales alongside our franchise network of Longevity Wellness Clinics, designed to maximize healthspan and optimize physiological performance."
+            },
+            trakpath: {
+                title: "🔗 TrakPath",
+                body: "TrakPath is regulatory technology. TrakPath transforms static identifiers into infinitely expandable digital twins using a patent-pending hydration engine. It provides append-only provenance for highly regulated industries like Pharmaceuticals, THC, and Global Freight."
+            },
+            sentynl: {
+                title: "📊 Sentynl",
+                body: "Sentynl is a proprietary data curation platform. Acting as a sophisticated ingestion and processing layer, turning fragmented, high-velocity data streams into structured, actionable intelligence for enterprise applications."
+            }
+        };
+
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+        const closeModalBtn = document.getElementById('closeModal');
+        const openButtons = document.querySelectorAll('.open-modal');
+
+        openButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetKey = button.getAttribute('data-modal');
+                const data = modalData[targetKey];
+
+                if (data) {
+                    modalTitle.innerHTML = data.title;
+                    modalBody.innerHTML = data.body;
+                    modalOverlay.classList.add('active');
+                    document.querySelector('.modal-content').scrollTop = 0;
+                }
+            });
+        });
+
+        const closeModal = () => {
+            modalOverlay.classList.remove('active');
+        };
+
+        closeModalBtn.addEventListener('click', closeModal);
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+
+</html>

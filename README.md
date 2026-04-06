@@ -1,2 +1,2 @@
-# MiJory-web
-Web hosting for MiJory LLC
+# trakpath-web
+Web hosting for TrakPath LLC
