@@ -1,596 +1,395 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MiJory LLC | Portfolio & Holding Company</title>
+    <title>MiJory LLC | Unified Ecosystem Portfolio</title>
+    
+    <meta name="description" content="MiJory Holdings operates a vertically integrated portfolio bridging physical health optimization with a highly scalable digital data moat.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        :root {
-            --bg-dark: #0B0F19;
-            --bg-panel: #111827;
-            --accent-blue: #00D2FF;
-            --accent-dark: #3A7BD5;
-            --text-main: #F3F4F6;
-            --text-muted: #9CA3AF;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
-
-        /* Navigation */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 5%;
-            background-color: rgba(11, 15, 25, 0.9);
-            position: sticky;
-            top: 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo span {
-            color: var(--accent-blue);
-        }
-
-        /* Buttons */
-        .btn {
-            background: linear-gradient(90deg, var(--accent-blue), var(--accent-dark));
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: opacity 0.3s, transform 0.2s;
-            border: none;
-            cursor: pointer;
-            display: inline-block;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        /* Hero Section */
-        header {
-            text-align: center;
-            padding: 8rem 5% 6rem;
-            background: radial-gradient(circle at top, #1a2a42 0%, var(--bg-dark) 70%);
-        }
-
-        .hero-badge {
-            display: inline-block;
-            background: rgba(0, 210, 255, 0.1);
-            color: var(--accent-blue);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(0, 210, 255, 0.2);
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
-        }
-
-        .highlight {
-            background: -webkit-linear-gradient(0deg, var(--accent-blue), var(--accent-dark));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        p.hero-sub {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 800px;
-            margin: 0 auto 2.5rem;
-        }
-
-        /* Features Grid */
-        .features {
-            padding: 5rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--bg-panel);
-            padding: 2.5rem;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: transform 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 210, 255, 0.3);
-        }
-
-        .card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-            color: var(--accent-blue);
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            flex-grow: 1;
-        }
-
-        .card-link {
-            margin-top: 1.5rem;
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: inline-block;
-        }
-        
-        .card-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Architecture Section */
-        .architecture {
-            background: var(--bg-panel);
-            padding: 5rem 5%;
-            text-align: center;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .arch-content {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .arch-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .arch-content p {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .arch-emphasis {
-            color: var(--text-main);
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
-        }
-
-        /* Diagram Styles */
-        .diagram-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .diagram-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
+        .diagram-container { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 2rem; margin: 3rem 0; }
+        .diagram-column { display: flex; flex-direction: column; gap: 1.5rem; }
         .node {
-            background: var(--bg-dark);
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            color: var(--text-main);
-            min-width: 220px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            background: #0f172a; border: 1px solid rgba(56, 189, 248, 0.3); padding: 1rem 1.5rem; border-radius: 8px;
+            font-weight: 600; color: #f8fafc; min-width: 220px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 0.75rem;
         }
-
-        .node:hover {
-            background: rgba(0, 210, 255, 0.1);
-            transform: scale(1.05);
-            border-color: var(--accent-blue);
-        }
-
+        .node:hover { background: rgba(56, 189, 248, 0.1); transform: scale(1.05); border-color: #38bdf8; }
         .node-center {
-            background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 123, 213, 0.2));
-            border: 2px solid var(--accent-blue);
-            padding: 2rem;
-            font-size: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.2);
-            z-index: 2;
-            cursor: default;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(59, 130, 246, 0.2)); border: 2px solid #38bdf8;
+            padding: 2rem; font-size: 1.5rem; border-radius: 12px; box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+            z-index: 2; cursor: default; flex-direction: column; gap: 0.25rem;
         }
-
-        .node-center:hover {
-            transform: none;
-            background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 123, 213, 0.2));
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(11, 15, 25, 0.85);
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background: var(--bg-panel);
-            border: 1px solid rgba(0, 210, 255, 0.3);
-            border-radius: 12px;
-            padding: 2.5rem;
-            max-width: 600px;
-            width: 90%;
-            max-height: 85vh;
-            overflow-y: auto;
-            position: relative;
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-overlay.active .modal-content {
-            transform: translateY(0);
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            cursor: pointer;
-            background: none;
-            border: none;
-            transition: color 0.2s;
-            z-index: 10;
-        }
-
-        .close-btn:hover {
-            color: var(--text-main);
-        }
-
-        .modal-title {
-            font-size: 1.5rem;
-            color: var(--accent-blue);
-            margin-bottom: 1rem;
-            font-weight: 800;
-            padding-right: 20px;
-        }
-
-        .modal-body {
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-        /* Contact Form Styles */
-        .contact-intro {
-            margin-bottom: 1.5rem;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .contact-card {
-            background: rgba(0, 210, 255, 0.05);
-            border: 1px solid rgba(0, 210, 255, 0.2);
-            padding: 1.25rem;
-            border-radius: 8px;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(0, 210, 255, 0.4);
-        }
-
-        .contact-card h4 {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            margin-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 0.5rem;
-        }
-
-        .contact-card p {
-            font-size: 0.85rem;
-            margin-bottom: 0.4rem;
-            color: var(--text-muted);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .contact-card a {
-            color: var(--accent-blue);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .contact-card a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 3rem 5%;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        footer p {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .diagram-container {
-                flex-direction: column;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-            }
-
-            .contact-card p {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 4px;
-            }
-        }
+        .node-center:hover { transform: none; background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(59, 130, 246, 0.2)); }
     </style>
 </head>
+<body class="bg-slate-950 text-slate-200 antialiased selection:bg-blue-500/30">
 
-<body>
+    <div id="root"></div>
 
-    <nav>
-        <div class="logo">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent-blue)" stroke-width="2.5"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                <line x1="12" y1="22.08" x2="12" y2="12"></line>
-            </svg>
-            <span>MiJory LLC</span>
-        </div>
-        <div>
-            <button class="btn open-modal" data-modal="contact"
-                style="padding: 0.5rem 1rem; font-size: 0.875rem;">Contact Team</button>
-        </div>
-    </nav>
+    <script type="text/babel">
+        const { useState } = React;
 
-    <header>
-        <div class="hero-badge">Incubating Tomorrow's Solutions</div>
-        <h1>Empowering Innovation <br>Across <span class="highlight">Industries</span></h1>
-        <p class="hero-sub">MiJory LLC is a dynamic holding company driving growth and operational excellence across wellness, regulatory technology, and data curation.</p>
-        <a href="#portfolio" class="btn">Explore Our Portfolio</a>
-    </header>
+        const IconBase = ({ children, className = "" }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
+        );
 
-    <section id="portfolio" class="features">
-        <h2 class="section-title">The MiJory Portfolio</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Right Roots</h3>
-                <p>Bringing premium, natural wellness to consumers through high-quality Kava sales. Dedicated to honoring traditional roots while providing modern, accessible products.</p>
-                <a href="https://kavakazees.com/" target="_blank" class="card-link">Visit Kavakazees &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Biotide</h3>
-                <p>Pioneering the future of healthspan. Biotide merges advanced peptide sales with cutting-edge longevity wellness franchise clinics to optimize human performance and wellness.</p>
-                <a href="#" class="card-link open-modal" data-modal="biotide">Learn More &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>TrakPath</h3>
-                <p>The intelligence layer for global trade. TrakPath utilizes a dynamic identifier hydration engine to solve the $184B supply chain data gap with append-only provenance.</p>
-                <a href="#" class="card-link open-modal" data-modal="trakpath">Explore Technology &rarr;</a>
-            </div>
-            <div class="card">
-                <h3>Sentynl</h3>
-                <p>Advanced data curation platform designed to structure, secure, and analyze high-volume data streams, empowering enterprises to make intelligent, real-time decisions.</p>
-                <a href="#" class="card-link open-modal" data-modal="sentynl">Discover Sentynl &rarr;</a>
-            </div>
-        </div>
-    </section>
+        const QrCode = ({ className }) => <IconBase className={className}><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></IconBase>;
+        const ShieldCheck = ({ className }) => <IconBase className={className}><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2-1 4-2 7-2 2.89 0 4.7 1 6.8 2a1 1 0 0 1 .5.89z"/><path d="m9 12 2 2 4-4"/></IconBase>;
+        const Dna = ({ className }) => <IconBase className={className}><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="m17 6-2.5-2.5"/><path d="m14 8-1-1"/><path d="m7 18 2.5 2.5"/><path d="m3.5 14.5.5.5"/><path d="m20 9 .5.5"/><path d="m6.5 12.5 1 1"/><path d="m16.5 10.5 1 1"/><path d="m10 16-1.5-1.5"/></IconBase>;
+        const Activity = ({ className }) => <IconBase className={className}><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></IconBase>;
+        const Leaf = ({ className }) => <IconBase className={className}><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 22l7-7"/></IconBase>;
+        const ArrowRight = ({ className }) => <IconBase className={className}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></IconBase>;
+        const CloudRain = ({ className }) => <IconBase className={className}><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M16 14v6"/><path d="M8 14v6"/><path d="M12 16v6"/></IconBase>;
+        const Target = ({ className }) => <IconBase className={className}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></IconBase>;
+        const TrendingUp = ({ className }) => <IconBase className={className}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></IconBase>;
+        const Zap = ({ className }) => <IconBase className={className}><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></IconBase>;
+        const Building2 = ({ className }) => <IconBase className={className}><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></IconBase>;
+        const Network = ({ className }) => <IconBase className={className}><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></IconBase>;
+        const PieChart = ({ className }) => <IconBase className={className}><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></IconBase>;
+        const BarChart3 = ({ className }) => <IconBase className={className}><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></IconBase>;
+        const DollarSign = ({ className }) => <IconBase className={className}><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></IconBase>;
+        const Users = ({ className }) => <IconBase className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></IconBase>;
+        const Milestone = ({ className }) => <IconBase className={className}><path d="M18 6H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h13l4-3.5L18 6Z"/><path d="M12 13v8"/><path d="M12 3v3"/></IconBase>;
+        const Mail = ({ className }) => <IconBase className={className}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></IconBase>;
+        const Phone = ({ className }) => <IconBase className={className}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></IconBase>;
+        const CalendarClock = ({ className }) => <IconBase className={className}><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/></IconBase>;
 
-    <section class="architecture">
-        <div class="arch-content">
-            <h2>A Unified Ecosystem</h2>
-            <p>While our portfolio spans diverse sectors—from biotechnology and holistic wellness to enterprise software and data management—each entity benefits from the shared strategic vision, operational support, and technical infrastructure provided by MiJory LLC.</p>
-            <p class="arch-emphasis">Click a subsidiary below to view details.</p>
+        const App = () => {
+          const [activeTab, setActiveTab] = useState('ecosystem');
+          const [isContactModalOpen, setContactModalOpen] = useState(false);
 
-            <div class="diagram-container">
-                <div class="diagram-column">
-                    <button class="node open-modal" data-modal="rightroots">🌿 Right Roots</button>
-                    <button class="node open-modal" data-modal="biotide">🧬 Biotide</button>
-                </div>
+          const textStyles = {
+            fontFamily: "font-sans",
+            header: "text-3xl md:text-4xl font-extrabold tracking-tight",
+            tagline: "text-lg font-medium opacity-80",
+            sectionTitle: "text-lg font-bold mb-4 flex items-center gap-2",
+            body: "text-slate-300 leading-relaxed text-sm md:text-base",
+            metricLabel: "text-xs font-bold text-slate-500 uppercase tracking-wider mb-2",
+          };
 
-                <div class="node node-center">
-                    MiJory LLC<br>
-                    <span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);">Holding & Incubation</span>
-                </div>
-
-                <div class="diagram-column">
-                    <button class="node open-modal" data-modal="trakpath">🔗 TrakPath</button>
-                    <button class="node open-modal" data-modal="sentynl">📊 Sentynl</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <p>2026 MiJory LLC. All rights reserved.</p>
-        <p>Meridian, Idaho | Transforming Data, Wellness, and Technology.</p>
-    </footer>
-
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <button class="close-btn" id="closeModal">&times;</button>
-            <h3 class="modal-title" id="modalTitle">Title</h3>
-            <div class="modal-body" id="modalBody">Body content goes here.</div>
-        </div>
-    </div>
-
-    <script>
-        const modalData = {
-            contact: {
-                title: "MiJory Executive Team",
-                body: `<p class="contact-intro">Reach out to the MiJory LLC executive team to discuss our portfolio companies, investment opportunities, or strategic partnerships.</p>
-                       <div class="contact-grid">
-                           <div class="contact-card">
-                               <h4>Josh McIver</h4>
-                               <p>Email: <a href="mailto:josh@mijory.com">josh@mijory.com</a></p>
-                               <p>Phone: <a href="tel:+12089008666">(208) 900-8666</a></p>
-                               <p>Location: <span>Meridian, ID</span></p>
-                           </div>
-                           <div class="contact-card">
-                               <h4>Ryan Pacheco</h4>
-                               <p>Email: <a href="mailto:ryan@mijory.com">ryan@mijory.com</a></p>
-                               <p>Phone: <a href="tel:+12089954681">(208) 995-4681</a></p>
-                               <p>Location: <span>Meridian, ID</span></p>
-                           </div>
-                           <div class="contact-card">
-                               <h4>Mike Larsen</h4>
-                               <p>Email: <a href="mailto:mike@mijory.com">mike@mijory.com</a></p>
-                               <p>Phone: <a href="tel:+12087035465">(208) 703-5465</a></p>
-                               <p>Location: <span>Meridian, ID</span></p>
-                           </div>
-                           <div class="contact-card">
-                               <h4>Gaby Larsen</h4>
-                               <p>Email: <a href="mailto:gaby@mijory.com">gaby@mijory.com</a></p>
-                               <p>Phone: <a href="tel:+12086020894">(208) 602-0894</a></p>
-                               <p>Location: <span>Meridian, ID</span></p>
-                           </div>
-                       </div>`
-            },
-            rightroots: {
-                title: "🌿 Right Roots",
-                body: "Right Roots operates in the holistic wellness space, specializing in premium Kava sales through consumer brand, Kavakazees. We focus on ethical sourcing and high-quality extracts to promote natural relaxation and wellness."
-            },
-            biotide: {
-                title: "🧬 Biotide",
-                body: "Biotide operates at the intersection of biotechnology and proactive healthcare. We offer direct peptide sales alongside our franchise network of Longevity Wellness Clinics, designed to maximize healthspan and optimize physiological performance."
-            },
+          const portfolio = {
             trakpath: {
-                title: "🔗 TrakPath",
-                body: "TrakPath is regulatory technology. TrakPath transforms static identifiers into infinitely expandable digital twins using a patent-pending hydration engine. It provides append-only provenance for highly regulated industries like Pharmaceuticals, THC, and Global Freight."
+              id: 'trakpath',
+              name: 'TrakPath',
+              tagline: 'Dynamic Supply Chain & Digital Twins',
+              icon: <QrCode className="w-8 h-8" />,
+              link: { url: "https://trakpath.mijory.com", text: "Explore TrakPath Site \u2192" },
+              description: 'The intelligence layer and "nerve center" of the Mijory ecosystem. TrakPath’s value proposition is simple but revolutionary: "Keep the label fixed, keep the product state live, and keep the audit trail immutable." Our patent-pending dual-layer architecture allows one permanent QR/barcode to stay with a regulated product for its entire lifecycle.',
+              synergy: 'Provides the underlying trust ledger for BioTide and Right Roots. Every consumer scan creates a verified touchpoint, bridging physical products to digital data assets.',
+              advantages: [
+                'Combines the speed of a normal operational database with the trust and tamper-resistance of an append-only blockchain.',
+                'More usable than "blockchain-first" systems, more defensible than centralized tools, and more adaptable than static-label compliance products.',
+                'Buyer Value: Lower relabeling cost, faster operations, better audit readiness, safer recalls/quarantines, and easier trust across suppliers.'
+              ],
+              traction: 'MVP is actively utilized by 4 companies across the cannabis, luxury goods, and mining industries. User feedback has been overwhelmingly positive.',
+              tam: '$184 Billion (Supply Chain Efficiency) | $20.8B (Traceability Market)',
+              forecast: 'By 2031, TrakPath aims to be the global standard for Sovereign Digital Infrastructure, capturing dominant market share in traceability for pharma, luxury, agriculture, and clinical peptides.',
+              theme: {
+                primaryText: "text-blue-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300", bgGradient: "bg-gradient-to-br from-blue-900/10 to-slate-900",
+                borderMain: "border-blue-500/20", borderAccent: "border-cyan-500/30", iconBox: "bg-blue-900/20 border-blue-500/40 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.15)]",
+                barFill: "bg-gradient-to-r from-blue-500 to-cyan-400", tabColor: "bg-blue-900/20 text-blue-400 border-blue-500/30"
+              },
+              infographic: { edgeTitle: "Scan Latency & Relabeling Overheads", edgeMetrics: [{ label: "TrakPath (Dual-Layer)", value: 5, display: "Near-Zero" }, { label: "Legacy Blockchain", value: 95, display: "High Latency" }], marketTitle: "Market Share Potential", marketMetrics: [{ label: "Traceability TAM", value: "$20.8B", height: "40%" }, { label: "Supply Chain TAM", value: "$184B", height: "100%" }] }
             },
             sentynl: {
-                title: "📊 Sentynl",
-                body: "Sentynl is a proprietary data curation platform. Acting as a sophisticated ingestion and processing layer, turning fragmented, high-velocity data streams into structured, actionable intelligence for enterprise applications."
+              id: 'sentynl', name: 'Sentynl', tagline: 'Underwriting-Grade Intelligence & InsurTech', icon: <ShieldCheck className="w-8 h-8" />,
+              description: 'Sentynl refines complex supply chain logistics and environmental data into cryptographically sealed, underwriting-grade assets. It acts as the monetization engine for the data exhaust created by the Mijory ecosystem.',
+              synergy: 'Leverages the TrakPath mobile app user base. As consumers scan products, the app accesses real-time smartphone sensor data to collect highly valuable, hyper-local weather and climate data.',
+              advantages: ['Proprietary aggregation of TrakPath app hyper-local weather data', 'Unassailable provenance-backed Supply Chain Risk Management (SCRM)', 'Direct pipeline to InsurTech, AI Model Trainers, and Risk Consultants'],
+              traction: 'Founding team with historical exits/VC history. Current valuation scope of $4.2M - $6.8M.',
+              tam: '$50 Billion (InsurTech) | $16.9B (SCRM Market by 2031)',
+              forecast: 'By 2031, Sentynl will be a premier wholesale data licensor for Tier-1 global risk consultants.',
+              theme: {
+                primaryText: "text-slate-300", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-gray-400", bgGradient: "bg-gradient-to-br from-slate-800/20 to-slate-900",
+                borderMain: "border-slate-600/30", borderAccent: "border-slate-400/40", iconBox: "bg-slate-800/40 border-slate-500/50 text-slate-300 shadow-[0_0_15px_rgba(148,163,184,0.1)]",
+                barFill: "bg-gradient-to-r from-slate-400 to-gray-300", tabColor: "bg-slate-800/40 text-slate-300 border-slate-500/30"
+              },
+              infographic: { edgeTitle: "Granularity of Climate Risk Data", edgeMetrics: [{ label: "Sentynl (Hyper-Local Mobile)", value: 95, display: "High Precision" }, { label: "Traditional InsurTech", value: 30, display: "Regional Estimates" }], marketTitle: "InsurTech & SCRM Growth", marketMetrics: [{ label: "2031 SCRM Projection", value: "$16.9B", height: "45%" }, { label: "Global InsurTech TAM", value: "$50.0B", height: "95%" }] }
+            },
+            biotide: {
+              id: 'biotide', name: 'BioTide', tagline: 'B2B Precision Peptides & Biologics', icon: <Dna className="w-8 h-8" />,
+              description: 'A dedicated B2B supplier of regulatory-compliant, white-label peptides to licensed U.S. practitioners, sports medicine facilities, and wellness clinics.',
+              synergy: 'BioTide integrates TrakPath QR codes on every vial. This provides clinics and patients with unassailable proof of GMP certification, raw material provenance, and lab testing compliance.',
+              advantages: ['Strict regulatory compliance (503a & 503b partnerships)', 'High-margin B2B private label model', 'TrakPath-enabled transparent supply chain (testing to point-of-sale)'],
+              traction: 'Active sales representatives in CO, ID, and CA. Established partnerships with GMP-certified manufacturers ensuring low-cost, high-margin distribution.',
+              tam: '$55 Billion (2026 U.S. Peptide Market) -> $162 Billion by 2035',
+              forecast: 'By 2031, BioTide is projected to be a top-tier B2B supplier, capturing significant share of the 10.9% CAGR clinician-dispensed wellness market.',
+              theme: {
+                primaryText: "text-indigo-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400", bgGradient: "bg-gradient-to-br from-indigo-900/10 to-slate-900",
+                borderMain: "border-indigo-500/20", borderAccent: "border-purple-500/30", iconBox: "bg-indigo-900/20 border-indigo-500/40 text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.15)]",
+                barFill: "bg-gradient-to-r from-indigo-500 to-purple-400", tabColor: "bg-indigo-900/20 text-indigo-400 border-indigo-500/30"
+              },
+              infographic: { edgeTitle: "B2B Margin & Trust Deficit", edgeMetrics: [{ label: "BioTide (Verified Provenance)", value: 95, display: "High Trust / Margin" }, { label: "Standard Wholesaler", value: 40, display: "Opaque Supply" }], marketTitle: "U.S. Peptide Market Projection", marketMetrics: [{ label: "2026 TAM", value: "$55B", height: "40%" }, { label: "2035 (10.9% CAGR)", value: "$162B", height: "100%" }] }
+            },
+            vitalis: {
+              id: 'vitalis', name: 'Vitalis Longevity', tagline: 'AI-Integrated Wellness Franchise', icon: <Activity className="w-8 h-8" />,
+              description: 'A scalable, turnkey wellness and anti-aging franchise modeled for operational efficiency but optimized for both men and women. It brings elite bio-hacking to the mainstream.',
+              synergy: 'Vitalis serves as the premium retail touchpoint. It utilizes BioTide\'s private-label peptides, ensuring high margins, while feeding aggregated, anonymized patient efficacy data back into the Mijory ecosystem.',
+              advantages: ['AI-powered diagnostics and genomic profiling', 'Turnkey, highly scalable franchise operations', 'Integrated regenerative medicine & cognitive enhancement protocols'],
+              traction: 'In active development with the first pilot franchise location slated for opening in Q3 2026.',
+              tam: '$60B+ (Global Longevity & Anti-Aging Clinics)',
+              forecast: 'Multi-state rollout achieving 100+ active franchise locations by 2031, establishing Vitalis as a household name.',
+              theme: {
+                primaryText: "text-amber-500", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-yellow-400", bgGradient: "bg-gradient-to-br from-amber-900/10 to-slate-900",
+                borderMain: "border-amber-500/20", borderAccent: "border-yellow-500/30", iconBox: "bg-amber-900/20 border-amber-500/40 text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)]",
+                barFill: "bg-gradient-to-r from-amber-500 to-yellow-400", tabColor: "bg-amber-900/20 text-amber-400 border-amber-500/30"
+              },
+              infographic: { edgeTitle: "Diagnostic Protocol Scalability", edgeMetrics: [{ label: "Vitalis AI Turnkey Model", value: 90, display: "Rapid Scaling" }, { label: "Traditional Concierge Clinic", value: 25, display: "Manual Ops" }], marketTitle: "Global Longevity Market", marketMetrics: [{ label: "Current Demand", value: "$60B+", height: "55%" }, { label: "Target Expansion", value: "$100B+", height: "90%" }] }
+            },
+            rightroots: {
+              id: 'rightroots', name: 'Right Roots', tagline: 'Functional Beverages & Fine-Tuned Nutraceuticals', icon: <Leaf className="w-8 h-8" />,
+              link: { url: "https://kavakazees.com/", text: "Visit Kavakazees Website \u2192" },
+              description: 'Right Roots transcends traditional beverages by offering a robust line of functional social beverages (like Kava Kazees) and fine-tuned nutraceutical supplements. We focus on delivering real relaxation, intense focus, and measurable performance results.',
+              synergy: 'Right Roots consumer products feature TrakPath QR codes. When scanned by consumers to verify purity, it drives TrakPath app adoption, which fuels Sentynl\'s data collection.',
+              advantages: ['Proprietary blends engineered for specific outcomes', 'First-mover advantage in premium functional social beverages', 'TrakPath-backed transparency proving the purity and origin'],
+              traction: 'Achieving ~$1M+ ARR and growing. National distribution established in smoke/vape and specialty retail channels.',
+              tam: '$2.17 Billion (Kava Extract TAM) | $250B Wellness Wave by 2030',
+              forecast: 'Designed for a strategic exit. By 2031, Right Roots aims to capture the functional social whitespace for acquisition by a Tier-1 beverage giant.',
+              theme: {
+                primaryText: "text-emerald-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-400", bgGradient: "bg-gradient-to-br from-emerald-900/10 to-slate-900",
+                borderMain: "border-emerald-500/20", borderAccent: "border-green-500/30", iconBox: "bg-emerald-900/20 border-emerald-500/40 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.15)]",
+                barFill: "bg-gradient-to-r from-emerald-500 to-green-400", tabColor: "bg-emerald-900/20 text-emerald-400 border-emerald-500/30"
+              },
+              infographic: { edgeTitle: "Functional Beverage Efficacy", edgeMetrics: [{ label: "Right Roots (Proprietary Blends)", value: 95, display: "High Efficacy" }, { label: "Standard RTD Brands", value: 35, display: "Placebo/Sugar" }], marketTitle: "Wellness Wave Trajectory", marketMetrics: [{ label: "Kava Extract TAM", value: "$2.17B", height: "15%" }, { label: "2030 Wellness TAM", value: "$250B", height: "100%" }] }
             }
+          };
+
+          return (
+            <div className={`min-h-screen bg-slate-950 text-slate-200 ${textStyles.fontFamily}`}>
+              
+              {/* Contact Modal Overlay */}
+              {isContactModalOpen && (
+                <div className="fixed inset-0 z- flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setContactModalOpen(false)}>
+                  <div className="bg-slate-900 border border-blue-500/30 rounded-2xl p-6 md:p-8 max-w-4xl w-full shadow-2xl relative" onClick={e => e.stopPropagation()}>
+                    <button onClick={() => setContactModalOpen(false)} className="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </button>
+                    
+                    <h3 className="text-2xl font-extrabold text-blue-400 mb-2 flex items-center gap-2"><Users className="w-6 h-6"/> MiJory Executive Team</h3>
+                    <p className="text-slate-400 mb-8 border-b border-slate-800 pb-4">Reach out to discuss our portfolio companies, investment opportunities, or strategic partnerships.</p>
+                    
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-blue-500/50 transition-colors">
+                        <h4 className="font-bold text-white mb-3 flex items-center gap-2 border-b border-slate-700 pb-2">Josh McIver</h4>
+                        <div className="space-y-2 text-sm text-slate-300">
+                          <p className="flex justify-between">Email: <a href="mailto:josh@mijory.com" className="text-blue-400 hover:underline">josh@mijory.com</a></p>
+                          <p className="flex justify-between">Phone: <a href="tel:2089008666" className="text-blue-400 hover:underline">208.900.8666</a></p>
+                        </div>
+                      </div>
+                      <div className="p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-blue-500/50 transition-colors">
+                        <h4 className="font-bold text-white mb-3 flex items-center gap-2 border-b border-slate-700 pb-2">Ryan Pacheco</h4>
+                        <div className="space-y-2 text-sm text-slate-300">
+                          <p className="flex justify-between">Email: <a href="mailto:ryan@mijory.com" className="text-blue-400 hover:underline">ryan@mijory.com</a></p>
+                          <p className="flex justify-between">Phone: <a href="tel:2089954681" className="text-blue-400 hover:underline">208.995.4681</a></p>
+                        </div>
+                      </div>
+                      <div className="p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-blue-500/50 transition-colors">
+                        <h4 className="font-bold text-white mb-3 flex items-center gap-2 border-b border-slate-700 pb-2">Mike Larsen</h4>
+                        <div className="space-y-2 text-sm text-slate-300">
+                          <p className="flex justify-between">Email: <a href="mailto:mike@mijory.com" className="text-blue-400 hover:underline">mike@mijory.com</a></p>
+                          <p className="flex justify-between">Phone: <a href="tel:2087035465" className="text-blue-400 hover:underline">208.703.5465</a></p>
+                        </div>
+                      </div>
+                      <div className="p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-blue-500/50 transition-colors">
+                        <h4 className="font-bold text-white mb-3 flex items-center gap-2 border-b border-slate-700 pb-2">Gaby Larsen</h4>
+                        <div className="space-y-2 text-sm text-slate-300">
+                          <p className="flex justify-between">Email: <a href="mailto:gaby@mijory.com" className="text-blue-400 hover:underline">gaby@mijory.com</a></p>
+                          <p className="flex justify-between">Phone: <a href="tel:2086020894" className="text-blue-400 hover:underline">208.602.0894</a></p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Redesigned 2-Tier Header */}
+              <header className="sticky top-0 z-50 bg-slate-950/90 backdrop-blur-md border-b border-slate-800">
+                <div className="max-w-7xl mx-auto px-6 py-4">
+                  
+                  {/* Row 1: Logo & Branding */}
+                  <div className="flex justify-center md:justify-start items-center gap-3 cursor-pointer mb-4 md:mb-5" onClick={() => setActiveTab('ecosystem')}>
+                    <Building2 className="w-8 h-8 text-blue-500" />
+                    <div>
+                      <h1 className="text-2xl font-bold tracking-tight text-white">MiJory LLC</h1>
+                      <p className="text-xs text-slate-400 uppercase tracking-widest font-semibold">Unified Ecosystem Portfolio</p>
+                    </div>
+                  </div>
+
+                  {/* Row 2: Full-Width Navigation (Desktop Only) */}
+                  <div className="hidden md:flex w-full items-center justify-between bg-slate-900/60 border border-slate-700/50 rounded-xl p-1.5 shadow-lg">
+                    
+                    {/* Left Side: Navigation Tabs */}
+                    <div className="flex items-center gap-1 flex-1 overflow-x-auto hide-scrollbar">
+                      <button onClick={() => setActiveTab('ecosystem')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'ecosystem' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>Overview</button>
+                      {Object.values(portfolio).map((company) => (
+                        <button key={company.id} onClick={() => setActiveTab(company.id)} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === company.id ? company.theme.tabColor + ' shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>
+                          {company.name}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Right Side: Action Buttons */}
+                    <div className="flex items-center gap-2 pl-3 ml-2 border-l border-slate-700/50">
+                      <button onClick={() => setActiveTab('funding')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all border ${activeTab === 'funding' ? 'bg-emerald-900/30 text-emerald-400 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.2)]' : 'bg-transparent border-transparent text-emerald-500 hover:text-emerald-400 hover:bg-emerald-900/20'}`}>
+                        <span className="flex items-center gap-1"><DollarSign className="w-4 h-4"/> Seed</span>
+                      </button>
+                      <button onClick={() => setContactModalOpen(true)} className="px-5 py-2 text-sm font-bold rounded-lg transition-all border bg-blue-600/20 text-blue-400 border-blue-500/50 hover:bg-blue-600/40">
+                        Contact Team
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </header>
+
+              <main className="max-w-7xl mx-auto px-6 py-12 pb-24">
+                {activeTab === 'ecosystem' ? (
+                  <div className="space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    <div className="text-center max-w-5xl mx-auto space-y-6 pt-6 pb-4">
+                      <div className="inline-block bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full text-sm font-semibold mb-4 border border-blue-500/20">Incubating Tomorrow's Solutions</div>
+                      <h2 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                        Empowering Innovation <br/>Across <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">Industries</span>
+                      </h2>
+                      <p className="text-xl text-slate-400 max-w-3xl mx-auto mt-6 leading-relaxed">
+                        MiJory LLC operates a vertically integrated portfolio bridging physical health optimization with a highly scalable digital data moat. Our structure is designed to capture margin at every step while generating cryptographically sealed data assets.
+                      </p>
+                    </div>
+
+                    <div className="py-8 border-y border-slate-800">
+                      <h3 className="text-center text-xl font-bold text-slate-300 mb-2">A Unified Ecosystem</h3>
+                      <p className="text-center text-sm text-slate-500 mb-8">Click a subsidiary below to view deep-dive analytics.</p>
+                      <div className="diagram-container">
+                          <div className="diagram-column">
+                              <button className="node group" onClick={() => setActiveTab('rightroots')}><Leaf className="w-5 h-5 text-emerald-400 group-hover:animate-bounce"/> Right Roots</button>
+                              <button className="node group" onClick={() => setActiveTab('biotide')}><Dna className="w-5 h-5 text-indigo-400 group-hover:animate-bounce"/> BioTide</button>
+                              <button className="node group" onClick={() => setActiveTab('vitalis')}><Activity className="w-5 h-5 text-amber-500 group-hover:animate-bounce"/> Vitalis Longevity</button>
+                          </div>
+                          <div className="node node-center text-center">
+                              <span className="font-extrabold tracking-tight text-white">MiJory LLC</span>
+                              <span className="text-sm font-normal text-slate-400">Holding & Incubation</span>
+                          </div>
+                          <div className="diagram-column">
+                              <button className="node group" onClick={() => setActiveTab('trakpath')}><QrCode className="w-5 h-5 text-blue-400 group-hover:animate-bounce"/> TrakPath</button>
+                              <button className="node group" onClick={() => setActiveTab('sentynl')}><CloudRain className="w-5 h-5 text-slate-300 group-hover:animate-bounce"/> Sentynl</button>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : activeTab === 'funding' ? (
+                  <div className="space-y-12 animate-in fade-in zoom-in-95 duration-500">
+                    <div className="text-center space-y-4 mb-12 pt-6">
+                      <div className="inline-flex items-center justify-center p-3 bg-emerald-900/30 border border-emerald-500/50 rounded-full mb-4"><DollarSign className="w-10 h-10 text-emerald-400" /></div>
+                      <h2 className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 tracking-tight">$1.5M Series Seed</h2>
+                      <p className="text-xl text-slate-300 font-light max-w-2xl mx-auto">We are one of the rare seed series companies that possess <span className="font-bold text-white">real traction and revenue</span>, not just ideas.</p>
+                    </div>
+                    
+                     <div className="p-8 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-600 text-center space-y-4 shadow-2xl">
+                       <h3 className="text-2xl font-bold text-white">Ready to explore the data room?</h3>
+                       <p className="text-slate-400 mb-6">Contact our executive team for investment inquiries.</p>
+                       <button onClick={() => setContactModalOpen(true)} className="px-8 py-4 text-lg font-bold rounded-lg transition-all border bg-blue-600/20 text-blue-400 border-blue-500/50 hover:bg-blue-600/40">
+                          View Executive Contacts
+                       </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="animate-in fade-in zoom-in-95 duration-500 space-y-8 pt-4">
+                    <div className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b ${portfolio[activeTab].theme.borderMain}`}>
+                       <div className="flex items-center gap-6">
+                           <div className={`p-4 rounded-xl border ${portfolio[activeTab].theme.iconBox}`}>
+                             {portfolio[activeTab].icon}
+                           </div>
+                           <div>
+                             <h2 className={`${textStyles.header} ${portfolio[activeTab].theme.gradientText}`}>{portfolio[activeTab].name}</h2>
+                             <p className={`${textStyles.tagline} ${portfolio[activeTab].theme.primaryText}`}>{portfolio[activeTab].tagline}</p>
+                           </div>
+                       </div>
+                       
+                       {/* DYNAMIC EXTERNAL LINK BUTTON (For TrakPath & Right Roots) */}
+                       {portfolio[activeTab].link && (
+                           <a href={portfolio[activeTab].link.url} target="_blank" rel="noopener noreferrer" 
+                              className={`px-6 py-3 rounded-lg font-bold transition-all whitespace-nowrap bg-slate-900 border ${portfolio[activeTab].theme.borderAccent} ${portfolio[activeTab].theme.primaryText} hover:bg-slate-800 shadow-lg flex items-center gap-2`}>
+                               {portfolio[activeTab].link.text}
+                           </a>
+                       )}
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                      <div className="lg:col-span-2 space-y-8">
+                        <section className={`p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-lg`}>
+                          <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText}`}>Company Overview</h3>
+                          <p className={textStyles.body}>{portfolio[activeTab].description}</p>
+                        </section>
+
+                        <section className={`p-6 rounded-2xl border ${portfolio[activeTab].theme.bgGradient} ${portfolio[activeTab].theme.borderAccent} shadow-lg`}>
+                          <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText}`}><Network className="w-5 h-5" /> Ecosystem Synergy</h3>
+                          <p className={textStyles.body}>{portfolio[activeTab].synergy}</p>
+                        </section>
+
+                        <section className={`p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-xl overflow-hidden`}>
+                          <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText} mb-6`}><PieChart className="w-5 h-5" /> Analytics & Market Edge</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="space-y-4">
+                              <h4 className="text-sm font-semibold text-slate-300">{portfolio[activeTab].infographic.edgeTitle}</h4>
+                              <div className="space-y-3">
+                                {portfolio[activeTab].infographic.edgeMetrics.map((metric, idx) => (
+                                  <div key={idx} className="space-y-1">
+                                    <div className="flex justify-between text-xs"><span className="text-slate-400 font-medium">{metric.label}</span><span className="text-slate-300">{metric.display}</span></div>
+                                    <div className="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                      <div className={`h-full rounded-full ${idx === 0 ? portfolio[activeTab].theme.barFill : 'bg-slate-600'}`} style={{ width: `${metric.value}%` }}></div>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </section>
+                      </div>
+
+                      <div className="space-y-6">
+                        <div className={`p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-lg`}>
+                          <h4 className={textStyles.metricLabel}>Current Traction</h4>
+                          <p className="text-sm text-white font-medium">{portfolio[activeTab].traction}</p>
+                        </div>
+                        <div className={`p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-lg`}>
+                          <h4 className={textStyles.metricLabel}>Total Addressable Market</h4>
+                          <p className={`text-2xl font-black ${portfolio[activeTab].theme.gradientText}`}>{portfolio[activeTab].tam}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </main>
+
+              {/* Mobile Footer NavBar */}
+              <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-slate-800 p-2 flex overflow-x-auto gap-2 z- hide-scrollbar">
+                 <button onClick={() => setContactModalOpen(true)} className="px-4 py-3 whitespace-nowrap text-xs font-bold rounded-lg border bg-blue-900/30 border-blue-500/50 text-blue-400">Contact</button>
+                 <button onClick={() => setActiveTab('ecosystem')} className={`px-4 py-3 whitespace-nowrap text-xs font-bold rounded-lg border ${activeTab === 'ecosystem' ? 'bg-slate-800 text-white border-slate-600' : 'bg-slate-900 border-slate-800 text-slate-400'}`}>Overview</button>
+                  {Object.values(portfolio).map((company) => (
+                    <button key={company.id} onClick={() => setActiveTab(company.id)} className={`px-4 py-3 whitespace-nowrap text-xs font-bold rounded-lg border ${activeTab === company.id ? company.theme.tabColor : 'bg-slate-900 border-slate-800 text-slate-400'}`}>{company.name}</button>
+                  ))}
+              </div>
+            </div>
+          );
         };
 
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalBody = document.getElementById('modalBody');
-        const closeModalBtn = document.getElementById('closeModal');
-        const openButtons = document.querySelectorAll('.open-modal');
-
-        openButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetKey = button.getAttribute('data-modal');
-                const data = modalData[targetKey];
-
-                if (data) {
-                    modalTitle.innerHTML = data.title;
-                    modalBody.innerHTML = data.body;
-                    modalOverlay.classList.add('active');
-                    document.querySelector('.modal-content').scrollTop = 0;
-                }
-            });
-        });
-
-        const closeModal = () => {
-            modalOverlay.classList.remove('active');
-        };
-
-        closeModalBtn.addEventListener('click', closeModal);
-
-        modalOverlay.addEventListener('click', (e) => {
-            if (e.target === modalOverlay) {
-                closeModal();
-            }
-        });
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
     </script>
 </body>
-
 </html>
