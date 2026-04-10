@@ -39,7 +39,6 @@
         }
         .node-center:hover { transform: none; background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(59, 130, 246, 0.2)); }
 
-        /* Mobile Responsive Overrides for Diagram */
         @media (max-width: 768px) {
             .diagram-container { flex-direction: column; gap: 1rem; margin: 2rem 0; }
             .diagram-column { max-width: 100%; gap: 1rem; }
@@ -48,7 +47,6 @@
             .node:hover { transform: scale(1.02); }
         }
         
-        /* Stop body scrolling when modal is open */
         body.modal-open { overflow: hidden; }
     </style>
 </head>
@@ -80,16 +78,12 @@
         const BarChart3 = ({ className }) => <IconBase className={className}><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></IconBase>;
         const DollarSign = ({ className }) => <IconBase className={className}><line x1="12" x2="12" y1="2" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></IconBase>;
         const Users = ({ className }) => <IconBase className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></IconBase>;
-        const Milestone = ({ className }) => <IconBase className={className}><path d="M18 6H5a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h13l4-3.5L18 6Z"/><path d="M12 13v8"/><path d="M12 3v3"/></IconBase>;
-        const Mail = ({ className }) => <IconBase className={className}><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></IconBase>;
-        const Phone = ({ className }) => <IconBase className={className}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></IconBase>;
-        const CalendarClock = ({ className }) => <IconBase className={className}><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/></IconBase>;
+        const LinkedinIcon = ({ className }) => <IconBase className={className}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></IconBase>;
 
         const App = () => {
           const [activeTab, setActiveTab] = useState('ecosystem');
           const [isContactModalOpen, setContactModalOpen] = useState(false);
 
-          // Prevent background scrolling when modal is open
           useEffect(() => {
             if (isContactModalOpen) {
               document.body.classList.add('modal-open');
@@ -107,91 +101,77 @@
             metricLabel: "text-xs font-bold text-slate-500 uppercase tracking-wider mb-2",
           };
 
+          // --- LEADERSHIP TEAM DATA ---
+          const leadershipTeam = [
+            { id: 1, name: "Josh McIver", title: "Founding Partner", image: "images/josh.jpg", linkedin: "https://www.linkedin.com/in/josh-mciver" },
+            { id: 2, name: "Mike Larsen", title: "Founding Partner", image: "images/mike.jpg", linkedin: "https://linkedin.com/in/mike-larsen-5ab356364" },
+            { id: 3, name: "Ryan Pacheco", title: "Chief Technology Officer", image: "images/ryan-p.jpg", linkedin: "https://linkedin.com/in/ryan-g-pacheco" },
+            { id: 4, name: "Dr. Jeremy Payne", title: "Chief Medical Officer", image: "images/jeremy.jpg", linkedin: "https://linkedin.com/in/jeremypayn" },
+            { id: 5, name: "Dr. Jessica Payne", title: "Chief Medical Officer", image: "images/jessica.jpg", linkedin: null },
+            { id: 6, name: "Ryan Muckenthaler", title: "Chief Compliance Officer", image: "images/ryan-m.jpg", linkedin: null },
+            { id: 7, name: "Gaby Larsen", title: "Marketing Specialist", image: "images/gaby.jpg", linkedin: null }
+          ];
+
+          const advisors = [
+            { id: 8, name: "Pete Anewalt", title: "Strategic Advisor", image: "images/pete.jpg", linkedin: "https://linkedin.com/in/peteranewalt" }
+          ];
+
+          // --- PORTFOLIO DATA ---
           const portfolio = {
             trakpath: {
-              id: 'trakpath',
-              name: 'TrakPath',
-              tagline: 'Dynamic Supply Chain & Digital Twins',
-              icon: <QrCode className="w-8 h-8" />,
-              link: { url: "https://trakpath.mijory.com", text: "Explore TrakPath Site \u2192" },
-              description: 'The intelligence layer and "nerve center" of the MiJory ecosystem. TrakPath’s value proposition is simple but revolutionary: "Keep the label fixed, keep the product state live, and keep the audit trail immutable." Our patent-pending dual-layer architecture allows one permanent QR/barcode to stay with a regulated product for its entire lifecycle.',
+              id: 'trakpath', name: 'TrakPath', tagline: 'Dynamic Supply Chain & Digital Twins', icon: <QrCode className="w-8 h-8" />, link: { url: "https://trakpath.mijory.com", text: "Explore TrakPath Site \u2192" },
+              description: 'The intelligence layer and "nerve center" of the Mijory ecosystem. TrakPath’s value proposition is simple but revolutionary: "Keep the label fixed, keep the product state live, and keep the audit trail immutable."',
               synergy: 'Provides the underlying trust ledger for BioTide and Right Roots. Every consumer scan creates a verified touchpoint, bridging physical products to digital data assets.',
-              advantages: [
-                'Combines the speed of a normal operational database with the trust and tamper-resistance of an append-only blockchain.',
-                'More usable than "blockchain-first" systems, more defensible than centralized tools, and more adaptable than static-label compliance products.',
-                'Buyer Value: Lower relabeling cost, faster operations, better audit readiness, safer recalls/quarantines, and easier trust across suppliers.'
-              ],
-              traction: 'MVP is actively utilized by 4 companies across the cannabis, luxury goods, and mining industries. User feedback has been overwhelmingly positive.',
-              tam: '$184 Billion (Supply Chain Efficiency) | $20.8B (Traceability Market)',
-              forecast: 'By 2031, TrakPath aims to be the global standard for Sovereign Digital Infrastructure, capturing dominant market share in traceability for pharma, luxury, agriculture, and clinical peptides.',
-              theme: {
-                primaryText: "text-blue-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300", bgGradient: "bg-gradient-to-br from-blue-900/10 to-slate-900",
-                borderMain: "border-blue-500/20", borderAccent: "border-cyan-500/30", iconBox: "bg-blue-900/20 border-blue-500/40 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.15)]",
-                barFill: "bg-gradient-to-r from-blue-500 to-cyan-400", tabColor: "bg-blue-900/20 text-blue-400 border-blue-500/30"
-              },
-              infographic: { edgeTitle: "Scan Latency & Relabeling Overheads", edgeMetrics: [{ label: "TrakPath (Dual-Layer)", value: 5, display: "Near-Zero" }, { label: "Legacy Blockchain", value: 95, display: "High Latency" }], marketTitle: "Market Share Potential", marketMetrics: [{ label: "Traceability TAM", value: "$20.8B", height: "40%" }, { label: "Supply Chain TAM", value: "$184B", height: "100%" }] }
+              advantages: ['Combines speed of operational DB with append-only blockchain.', 'More usable than "blockchain-first" systems.', 'Lower relabeling cost, faster operations, better audit readiness.'],
+              traction: 'MVP is actively utilized by 4 companies across the cannabis, luxury goods, and mining industries.',
+              tam: '$184 Billion (Supply Chain Efficiency)',
+              forecast: 'By 2031, TrakPath aims to be the global standard for Sovereign Digital Infrastructure.',
+              theme: { primaryText: "text-blue-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300", bgGradient: "bg-gradient-to-br from-blue-900/10 to-slate-900", borderMain: "border-blue-500/20", borderAccent: "border-cyan-500/30", iconBox: "bg-blue-900/20 border-blue-500/40 text-blue-400", barFill: "bg-gradient-to-r from-blue-500 to-cyan-400", tabColor: "bg-blue-900/20 text-blue-400 border-blue-500/30" },
+              infographic: { edgeTitle: "Scan Latency Overheads", edgeMetrics: [{ label: "TrakPath", value: 5, display: "Near-Zero" }, { label: "Legacy DB", value: 80, display: "High Cost" }], marketTitle: "Market Share Potential", marketMetrics: [{ label: "Traceability", value: "$20.8B", height: "40%" }, { label: "Supply Chain", value: "$184B", height: "100%" }] }
             },
             sentynl: {
-              id: 'sentynl', name: 'Sentynl', tagline: 'Underwriting-Grade Intelligence & InsurTech', icon: <ShieldCheck className="w-8 h-8" />,
-              description: 'Sentynl refines complex supply chain logistics and environmental data into cryptographically sealed, underwriting-grade assets. It acts as the monetization engine for the data exhaust created by the MiJory ecosystem.',
-              synergy: 'Leverages the TrakPath mobile app user base. As consumers scan products, the app accesses real-time smartphone sensor data to collect highly valuable, hyper-local weather and climate data.',
-              advantages: ['Proprietary aggregation of TrakPath app hyper-local weather data', 'Unassailable provenance-backed Supply Chain Risk Management (SCRM)', 'Direct pipeline to InsurTech, AI Model Trainers, and Risk Consultants'],
-              traction: 'Founding team with historical exits/VC history. Current valuation scope of $4.2M - $6.8M.',
-              tam: '$50 Billion (InsurTech) | $16.9B (SCRM Market by 2031)',
+              id: 'sentynl', name: 'Sentynl', tagline: 'Underwriting-Grade Intelligence', icon: <ShieldCheck className="w-8 h-8" />,
+              description: 'Sentynl refines complex supply chain logistics and environmental data into cryptographically sealed, underwriting-grade assets.',
+              synergy: 'Leverages the TrakPath mobile app user base to collect highly valuable, hyper-local weather and climate data.',
+              advantages: ['Proprietary aggregation of hyper-local weather data', 'Unassailable provenance-backed Supply Chain Risk Management', 'Direct pipeline to InsurTech'],
+              traction: 'Founding team with historical exits. Current valuation scope of $4.2M - $6.8M.',
+              tam: '$50 Billion (InsurTech)',
               forecast: 'By 2031, Sentynl will be a premier wholesale data licensor for Tier-1 global risk consultants.',
-              theme: {
-                primaryText: "text-slate-300", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-gray-400", bgGradient: "bg-gradient-to-br from-slate-800/20 to-slate-900",
-                borderMain: "border-slate-600/30", borderAccent: "border-slate-400/40", iconBox: "bg-slate-800/40 border-slate-500/50 text-slate-300 shadow-[0_0_15px_rgba(148,163,184,0.1)]",
-                barFill: "bg-gradient-to-r from-slate-400 to-gray-300", tabColor: "bg-slate-800/40 text-slate-300 border-slate-500/30"
-              },
-              infographic: { edgeTitle: "Granularity of Climate Risk Data", edgeMetrics: [{ label: "Sentynl (Hyper-Local Mobile)", value: 95, display: "High Precision" }, { label: "Traditional InsurTech", value: 30, display: "Regional Estimates" }], marketTitle: "InsurTech & SCRM Growth", marketMetrics: [{ label: "2031 SCRM Projection", value: "$16.9B", height: "45%" }, { label: "Global InsurTech TAM", value: "$50.0B", height: "95%" }] }
+              theme: { primaryText: "text-slate-300", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-gray-400", bgGradient: "bg-gradient-to-br from-slate-800/20 to-slate-900", borderMain: "border-slate-600/30", borderAccent: "border-slate-400/40", iconBox: "bg-slate-800/40 border-slate-500/50 text-slate-300", barFill: "bg-gradient-to-r from-slate-400 to-gray-300", tabColor: "bg-slate-800/40 text-slate-300 border-slate-500/30" },
+              infographic: { edgeTitle: "Granularity of Risk Data", edgeMetrics: [{ label: "Sentynl Mobile", value: 95, display: "High Precision" }, { label: "Traditional", value: 30, display: "Estimates" }], marketTitle: "InsurTech Growth", marketMetrics: [{ label: "SCRM Projection", value: "$16.9B", height: "45%" }, { label: "Global InsurTech", value: "$50.0B", height: "95%" }] }
             },
             biotide: {
               id: 'biotide', name: 'BioTide', tagline: 'B2B Precision Peptides & Biologics', icon: <Dna className="w-8 h-8" />,
-              link: { url: "https://biotide.mijory.com/", text: "Visit BioTide Website \u2192" },
-              description: 'A dedicated B2B supplier of regulatory-compliant, white-label peptides to licensed U.S. practitioners, sports medicine facilities, and wellness clinics.',
-              synergy: 'BioTide integrates TrakPath QR codes on every vial. This provides clinics and patients with unassailable proof of GMP certification, raw material provenance, and lab testing compliance.',
-              advantages: ['Strict regulatory compliance (503a & 503b partnerships)', 'High-margin B2B private label model', 'TrakPath-enabled transparent supply chain (testing to point-of-sale)'],
-              traction: 'Active sales representatives in CO, ID, and CA. Established partnerships with GMP-certified manufacturers ensuring low-cost, high-margin distribution.',
-              tam: '$55 Billion (2026 U.S. Peptide Market) -> $162 Billion by 2035',
-              forecast: 'By 2031, BioTide is projected to be a top-tier B2B supplier, capturing significant share of the 10.9% CAGR clinician-dispensed wellness market.',
-              theme: {
-                primaryText: "text-indigo-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400", bgGradient: "bg-gradient-to-br from-indigo-900/10 to-slate-900",
-                borderMain: "border-indigo-500/20", borderAccent: "border-purple-500/30", iconBox: "bg-indigo-900/20 border-indigo-500/40 text-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.15)]",
-                barFill: "bg-gradient-to-r from-indigo-500 to-purple-400", tabColor: "bg-indigo-900/20 text-indigo-400 border-indigo-500/30"
-              },
-              infographic: { edgeTitle: "B2B Margin & Trust Deficit", edgeMetrics: [{ label: "BioTide (Verified Provenance)", value: 95, display: "High Trust / Margin" }, { label: "Standard Wholesaler", value: 40, display: "Opaque Supply" }], marketTitle: "U.S. Peptide Market Projection", marketMetrics: [{ label: "2026 TAM", value: "$55B", height: "40%" }, { label: "2035 (10.9% CAGR)", value: "$162B", height: "100%" }] }
+              description: 'A dedicated B2B supplier of regulatory-compliant, white-label peptides to licensed U.S. practitioners and wellness clinics.',
+              synergy: 'Integrates TrakPath QR codes on every vial, providing clinics with unassailable proof of GMP certification and lab testing compliance.',
+              advantages: ['Strict regulatory compliance (503a/503b)', 'High-margin B2B private label model', 'TrakPath-enabled transparent supply chain'],
+              traction: 'Active sales reps in CO, ID, and CA. Established partnerships with GMP-certified manufacturers.',
+              tam: '$55 Billion (2026 Peptide Market)',
+              forecast: 'By 2031, BioTide is projected to capture significant share of the 10.9% CAGR clinician-dispensed wellness market.',
+              theme: { primaryText: "text-indigo-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400", bgGradient: "bg-gradient-to-br from-indigo-900/10 to-slate-900", borderMain: "border-indigo-500/20", borderAccent: "border-purple-500/30", iconBox: "bg-indigo-900/20 border-indigo-500/40 text-indigo-400", barFill: "bg-gradient-to-r from-indigo-500 to-purple-400", tabColor: "bg-indigo-900/20 text-indigo-400 border-indigo-500/30" },
+              infographic: { edgeTitle: "B2B Trust Deficit", edgeMetrics: [{ label: "BioTide Verified", value: 95, display: "High Trust" }, { label: "Standard Wholesaler", value: 40, display: "Opaque" }], marketTitle: "Peptide Market Projection", marketMetrics: [{ label: "2026 TAM", value: "$55B", height: "40%" }, { label: "2035 Target", value: "$162B", height: "100%" }] }
             },
             vitalis: {
               id: 'vitalis', name: 'Vitalis Longevity', tagline: 'AI-Integrated Wellness Franchise', icon: <Activity className="w-8 h-8" />,
-              description: 'A scalable, turnkey wellness and anti-aging franchise modeled for operational efficiency but optimized for both men and women. It brings elite bio-hacking to the mainstream.',
-              synergy: 'Vitalis serves as the premium retail touchpoint. It utilizes BioTide\'s private-label peptides to ensure high margins. Simultaneously, it feeds aggregated, anonymized patient efficacy data back into the MiJory ecosystem.',
-              advantages: ['AI-powered diagnostics and genomic profiling', 'Turnkey, highly scalable franchise operations', 'Integrated regenerative medicine & cognitive enhancement protocols'],
+              description: 'A scalable, turnkey wellness and anti-aging franchise modeled for operational efficiency. It brings elite bio-hacking to the mainstream.',
+              synergy: 'Serves as the premium retail touchpoint, utilizing BioTide\'s private-label peptides while feeding anonymized patient efficacy data back into the ecosystem.',
+              advantages: ['AI-powered diagnostics and genomic profiling', 'Turnkey franchise operations', 'Integrated regenerative medicine protocols'],
               traction: 'In active development with the first pilot franchise location slated for opening in Q3 2026.',
-              tam: '$60B+ (Global Longevity & Anti-Aging Clinics)',
-              forecast: 'Multi-state rollout achieving 100+ active franchise locations by 2031, establishing Vitalis as a household name.',
-              theme: {
-                primaryText: "text-amber-500", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-yellow-400", bgGradient: "bg-gradient-to-br from-amber-900/10 to-slate-900",
-                borderMain: "border-amber-500/20", borderAccent: "border-yellow-500/30", iconBox: "bg-amber-900/20 border-amber-500/40 text-amber-500 shadow-[0_0_15px_rgba(245,158,11,0.15)]",
-                barFill: "bg-gradient-to-r from-amber-500 to-yellow-400", tabColor: "bg-amber-900/20 text-amber-400 border-amber-500/30"
-              },
-              infographic: { edgeTitle: "Diagnostic Protocol Scalability", edgeMetrics: [{ label: "Vitalis AI Turnkey Model", value: 90, display: "Rapid Scaling" }, { label: "Traditional Concierge Clinic", value: 25, display: "Manual Ops" }], marketTitle: "Global Longevity Market", marketMetrics: [{ label: "Current Demand", value: "$60B+", height: "55%" }, { label: "Target Expansion", value: "$100B+", height: "90%" }] }
+              tam: '$60B+ (Global Longevity Clinics)',
+              forecast: 'Multi-state rollout achieving 100+ active franchise locations by 2031.',
+              theme: { primaryText: "text-amber-500", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-yellow-400", bgGradient: "bg-gradient-to-br from-amber-900/10 to-slate-900", borderMain: "border-amber-500/20", borderAccent: "border-yellow-500/30", iconBox: "bg-amber-900/20 border-amber-500/40 text-amber-500", barFill: "bg-gradient-to-r from-amber-500 to-yellow-400", tabColor: "bg-amber-900/20 text-amber-400 border-amber-500/30" },
+              infographic: { edgeTitle: "Protocol Scalability", edgeMetrics: [{ label: "Vitalis AI Model", value: 90, display: "Rapid Scaling" }, { label: "Concierge Clinic", value: 25, display: "Manual" }], marketTitle: "Global Longevity Market", marketMetrics: [{ label: "Current Demand", value: "$60B+", height: "55%" }, { label: "Target Expansion", value: "$100B+", height: "90%" }] }
             },
             rightroots: {
-              id: 'rightroots', name: 'Right Roots', tagline: 'Functional Beverages & Fine-Tuned Nutraceuticals', icon: <Leaf className="w-8 h-8" />,
-              link: { url: "https://kavakazees.com/", text: "Visit Kavakazees Website \u2192" },
-              description: 'Right Roots transcends traditional beverages by offering a robust line of functional social beverages (like Kava Kazees) and fine-tuned nutraceutical supplements. We focus on delivering real relaxation, intense focus, and measurable performance results.',
-              synergy: 'OUr Right Roots consumer products feature a TrakPath QR code to verify our products purity. When scanned by consumers, it drives the TrakPath app adoption fuling Sentynl\'s data collection',
-              advantages: ['Proprietary blends engineered for specific outcomes', 'First-mover advantage in premium functional social beverages', 'TrakPath-backed transparency proving the purity and origin'],
-              traction: 'Achieving ~$1M+ ARR and growing. National distribution established in smoke/vape and specialty retail channels.',
-              tam: '$2.17 Billion (Kava Extract TAM) | $250B Wellness Wave by 2030',
-              forecast: 'Designed for a strategic exit. By 2031, Right Roots aims to capture the functional social whitespace for acquisition by a Tier-1 beverage giant.',
-              theme: {
-                primaryText: "text-emerald-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-400", bgGradient: "bg-gradient-to-br from-emerald-900/10 to-slate-900",
-                borderMain: "border-emerald-500/20", borderAccent: "border-green-500/30", iconBox: "bg-emerald-900/20 border-emerald-500/40 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.15)]",
-                barFill: "bg-gradient-to-r from-emerald-500 to-green-400", tabColor: "bg-emerald-900/20 text-emerald-400 border-emerald-500/30"
-              },
-              infographic: { edgeTitle: "Functional Beverage Efficacy", edgeMetrics: [{ label: "Right Roots (Proprietary Blends)", value: 95, display: "High Efficiency" }, { label: "Standard RTD Brands", value: 35, display: "Placebo/Sugar" }], marketTitle: "Wellness Wave Trajectory", marketMetrics: [{ label: "Kava Extract TAM", value: "$2.17B", height: "15%" }, { label: "2030 Wellness TAM", value: "$250B", height: "100%" }] }
+              id: 'rightroots', name: 'Right Roots', tagline: 'Functional Beverages & Nutraceuticals', icon: <Leaf className="w-8 h-8" />, link: { url: "https://kavakazees.com/", text: "Visit Kavakazees Website \u2192" },
+              description: 'Right Roots transcends traditional beverages by offering functional social beverages (like Kava Kazees) and fine-tuned nutraceutical supplements.',
+              synergy: 'Consumer products feature TrakPath QR codes. Scans verify purity and drive app adoption, fueling Sentynl\'s data collection.',
+              advantages: ['Proprietary blends engineered for specific outcomes', 'First-mover advantage in functional social beverages', 'TrakPath-backed transparency proving purity'],
+              traction: 'Achieving ~$1M+ ARR. National distribution established in specialty retail channels.',
+              tam: '$2.17 Billion (Kava Extract TAM)',
+              forecast: 'Designed for a strategic exit. Aims to capture the functional social whitespace for acquisition by a Tier-1 beverage giant by 2031.',
+              theme: { primaryText: "text-emerald-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-400", bgGradient: "bg-gradient-to-br from-emerald-900/10 to-slate-900", borderMain: "border-emerald-500/20", borderAccent: "border-green-500/30", iconBox: "bg-emerald-900/20 border-emerald-500/40 text-emerald-400", barFill: "bg-gradient-to-r from-emerald-500 to-green-400", tabColor: "bg-emerald-900/20 text-emerald-400 border-emerald-500/30" },
+              infographic: { edgeTitle: "Beverage Efficacy", edgeMetrics: [{ label: "Right Roots", value: 95, display: "High Efficacy" }, { label: "Standard RTD Brands", value: 35, display: "Placebo/Sugar" }], marketTitle: "Wellness Trajectory", marketMetrics: [{ label: "Kava Extract TAM", value: "$2.17B", height: "15%" }, { label: "2030 Wellness TAM", value: "$250B", height: "100%" }] }
             }
           };
 
@@ -201,24 +181,15 @@
               {/* Z-50 Contact Modal Overlay */}
               {isContactModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center md:p-6 bg-slate-950/95 backdrop-blur-md animate-in fade-in duration-200" onClick={() => setContactModalOpen(false)}>
-                  
-                  {/* Modal Container: Full height on mobile, auto on desktop */}
                   <div className="bg-slate-900 w-full h-full md:h-auto md:border md:border-blue-500/30 md:rounded-2xl md:max-w-4xl shadow-2xl flex flex-col md:max-h-[85vh]" onClick={e => e.stopPropagation()}>
-                    
-                    {/* Sticky Header */}
                     <div className="flex justify-between items-center p-5 md:p-6 border-b border-slate-800 shrink-0 bg-slate-900 pt-8 md:pt-6 md:rounded-t-2xl">
-                      <h3 className="text-xl md:text-2xl font-extrabold text-blue-400 flex items-center gap-2">
-                        <Users className="w-5 h-5 md:w-6 md:h-6"/> MiJory Executive Team
-                      </h3>
+                      <h3 className="text-xl md:text-2xl font-extrabold text-blue-400 flex items-center gap-2"><Users className="w-5 h-5 md:w-6 md:h-6"/> MiJory Executive Team</h3>
                       <button onClick={() => setContactModalOpen(false)} className="p-2 -mr-2 text-slate-400 hover:text-white bg-slate-800/50 hover:bg-slate-700 rounded-full transition-colors hidden md:block">
                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                       </button>
                     </div>
-                    
-                    {/* Scrollable Body */}
                     <div className="p-5 md:p-6 overflow-y-auto overscroll-contain flex-1">
                       <p className="text-sm md:text-base text-slate-400 mb-6">Reach out to discuss our portfolio companies, investment opportunities, or strategic partnerships.</p>
-                      
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="p-4 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-blue-500/50 transition-colors">
                           <h4 className="font-bold text-white mb-3 flex items-center gap-2 border-b border-slate-700 pb-2">Josh McIver</h4>
@@ -250,23 +221,18 @@
                         </div>
                       </div>
                     </div>
-
-                    {/* Mobile Only Close Button - Pinned Bottom */}
                     <div className="md:hidden p-5 border-t border-slate-800 bg-slate-900 shrink-0 pb-12">
                       <button onClick={() => setContactModalOpen(false)} className="w-full py-4 bg-slate-800 border border-slate-600 text-white font-bold rounded-xl active:scale-95 transition-transform flex justify-center items-center gap-2">
                         <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg> Close Directory
                       </button>
                     </div>
-
                   </div>
                 </div>
               )}
 
-              {/* Z-30 Header - Solid Background on Mobile */}
+              {/* Z-30 Header */}
               <header className="sticky top-0 z-30 bg-slate-950 md:bg-slate-950/90 md:backdrop-blur-md border-b border-slate-800 px-4 md:px-6 py-4">
                 <div className="max-w-7xl mx-auto">
-                  
-                  {/* Row 1: Logo & Branding */}
                   <div className="flex justify-center md:justify-start items-center gap-3 cursor-pointer mb-0 md:mb-5" onClick={() => setActiveTab('ecosystem')}>
                     <Building2 className="w-7 h-7 md:w-8 md:h-8 text-blue-500" />
                     <div>
@@ -275,19 +241,17 @@
                     </div>
                   </div>
 
-                  {/* Row 2: Full-Width Navigation (Desktop Only) */}
                   <div className="hidden md:flex w-full items-center justify-between bg-slate-900/60 border border-slate-700/50 rounded-xl p-1.5 shadow-lg">
-                    {/* Left Side: Navigation Tabs */}
                     <div className="flex items-center gap-1 flex-1 overflow-x-auto hide-scrollbar">
                       <button onClick={() => setActiveTab('ecosystem')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'ecosystem' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>Overview</button>
+                      <button onClick={() => setActiveTab('team')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'team' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>Leadership</button>
+                      
                       {Object.values(portfolio).map((company) => (
                         <button key={company.id} onClick={() => setActiveTab(company.id)} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === company.id ? company.theme.tabColor + ' shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>
                           {company.name}
                         </button>
                       ))}
                     </div>
-
-                    {/* Right Side: Action Buttons */}
                     <div className="flex items-center gap-2 pl-3 ml-2 border-l border-slate-700/50">
                       <button onClick={() => setActiveTab('funding')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all border ${activeTab === 'funding' ? 'bg-emerald-900/30 text-emerald-400 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.2)]' : 'bg-transparent border-transparent text-emerald-500 hover:text-emerald-400 hover:bg-emerald-900/20'}`}>
                         <span className="flex items-center gap-1"><DollarSign className="w-4 h-4"/> Seed</span>
@@ -301,6 +265,8 @@
               </header>
 
               <main className="flex-1 max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12 pb-24 md:pb-12 w-full">
+                
+                {/* --- ECOSYSTEM TAB --- */}
                 {activeTab === 'ecosystem' ? (
                   <div className="space-y-12 md:space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
                     <div className="text-center max-w-5xl mx-auto space-y-4 md:space-y-6 pt-4 md:pt-6">
@@ -340,11 +306,9 @@
                       </div>
                     </div>
 
-                    {/* Synergy Flow Chart UI */}
                     <div className="relative p-5 md:p-8 rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-2xl">
                       <div className="absolute top-0 right-0 p-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
                       <h3 className="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8 text-center">The Cross-Vertical Data Monetization Loop</h3>
-                      
                       <div className="grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-4 items-center">
                         <div className="md:col-span-1 space-y-3">
                           <div className="p-3 md:p-4 rounded-xl bg-slate-800/50 border border-slate-700 flex flex-col items-center text-center gap-2 transition-transform hover:scale-105 cursor-pointer" onClick={() => setActiveTab('rightroots')}>
@@ -356,26 +320,21 @@
                             <span className="text-xs md:text-sm font-semibold">Vitalis / BioTide Clinics</span>
                           </div>
                         </div>
-
                         <div className="hidden md:flex justify-center text-slate-600"><ArrowRight className="w-8 h-8 animate-pulse" /></div>
                         <div className="md:hidden flex justify-center text-slate-600 py-1"><ArrowDown className="w-6 h-6 animate-pulse" /></div>
-
                         <div className="md:col-span-1 p-5 md:p-6 rounded-xl bg-blue-900/20 border border-blue-500/30 flex flex-col items-center text-center gap-2 relative transition-transform hover:scale-105 cursor-pointer" onClick={() => setActiveTab('trakpath')}>
                           <QrCode className="w-8 h-8 md:w-10 md:h-10 text-blue-400" />
                           <h4 className="font-bold text-blue-300 text-sm md:text-base">TrakPath QR</h4>
                           <p className="text-[10px] md:text-xs text-slate-400">Consumers & Clinics scan for compliance, purity & provenance.</p>
                         </div>
-
                         <div className="hidden md:flex justify-center text-slate-600"><ArrowRight className="w-8 h-8 animate-pulse" /></div>
                         <div className="md:hidden flex justify-center text-slate-600 py-1"><ArrowDown className="w-6 h-6 animate-pulse" /></div>
-
                         <div className="md:col-span-1 p-5 md:p-6 rounded-xl bg-slate-800/60 border border-slate-500/30 flex flex-col items-center text-center gap-2 relative transition-transform hover:scale-105 cursor-pointer" onClick={() => setActiveTab('sentynl')}>
                           <CloudRain className="w-8 h-8 md:w-10 md:h-10 text-slate-300" />
                           <h4 className="font-bold text-slate-200 text-sm md:text-base">Sentynl Vault</h4>
                           <p className="text-[10px] md:text-xs text-slate-400">App harvests hyper-local weather & logs supply chain data.</p>
                         </div>
                       </div>
-
                       <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-slate-800 text-center relative z-10">
                         <p className="text-xs md:text-sm uppercase tracking-widest text-slate-500 font-bold mb-3 md:mb-4">Value Extraction & The Trust Moat</p>
                         <div className="flex flex-wrap justify-center gap-2 md:gap-3">
@@ -387,6 +346,65 @@
                       </div>
                     </div>
                   </div>
+
+                /* --- LEADERSHIP TEAM TAB --- */
+                ) : activeTab === 'team' ? (
+                  <div className="space-y-12 animate-in fade-in zoom-in-95 duration-500">
+                      <div className="text-center space-y-4 mb-12 pt-4 md:pt-6">
+                          <div className="inline-flex items-center justify-center p-3 bg-blue-900/30 border border-blue-500/50 rounded-full mb-4">
+                              <Users className="w-8 h-8 md:w-10 md:h-10 text-blue-400" />
+                          </div>
+                          <h2 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Leadership Team</h2>
+                          <p className="text-lg md:text-xl text-slate-300 font-light max-w-2xl mx-auto">
+                              A diverse collective of founders, technologists, and medical professionals building the infrastructure of tomorrow.
+                          </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                          {leadershipTeam.map((member) => (
+                              <div key={member.id} className="p-6 rounded-2xl bg-slate-900 border border-slate-700 shadow-lg flex flex-col items-center text-center gap-4 hover:border-blue-500/50 transition-colors group">
+                                  <div className="w-32 h-32 rounded-full bg-slate-800 border-2 border-slate-600 flex items-center justify-center overflow-hidden shadow-inner group-hover:border-blue-400 transition-colors">
+                                      <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                                  </div>
+                                  <div>
+                                      <h3 className="text-xl font-bold text-white">{member.name}</h3>
+                                      <p className="text-sm text-blue-400 font-medium">{member.title}</p>
+                                  </div>
+                                  {member.linkedin ? (
+                                      <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="mt-auto px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-sm flex items-center gap-2 hover:bg-[#0077b5] hover:border-[#0077b5] hover:text-white transition-all">
+                                          <LinkedinIcon className="w-4 h-4" /> LinkedIn Profile
+                                      </a>
+                                  ) : (
+                                      <div className="mt-auto px-4 py-2 opacity-0">Placeholder</div>
+                                  )}
+                              </div>
+                          ))}
+                      </div>
+
+                      <div className="pt-12 mt-12 border-t border-slate-800">
+                          <div className="text-center space-y-4 mb-10">
+                              <h3 className="text-3xl font-extrabold text-white tracking-tight">Strategic Advisors</h3>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center">
+                              {advisors.map((advisor) => (
+                                  <div key={advisor.id} className="p-6 rounded-2xl bg-slate-900 border border-slate-700 shadow-lg flex flex-col items-center text-center gap-4 hover:border-blue-500/50 transition-colors group">
+                                      <div className="w-32 h-32 rounded-full bg-slate-800 border-2 border-slate-600 flex items-center justify-center overflow-hidden shadow-inner group-hover:border-blue-400 transition-colors">
+                                          <img src={advisor.image} alt={advisor.name} className="w-full h-full object-cover" />
+                                      </div>
+                                      <div>
+                                          <h3 className="text-xl font-bold text-white">{advisor.name}</h3>
+                                          <p className="text-sm text-blue-400 font-medium">{advisor.title}</p>
+                                      </div>
+                                      <a href={advisor.linkedin} target="_blank" rel="noopener noreferrer" className="mt-auto px-4 py-2 rounded-full bg-slate-800 border border-slate-700 text-slate-300 text-sm flex items-center gap-2 hover:bg-[#0077b5] hover:border-[#0077b5] hover:text-white transition-all">
+                                          <LinkedinIcon className="w-4 h-4" /> LinkedIn Profile
+                                      </a>
+                                  </div>
+                              ))}
+                          </div>
+                      </div>
+                  </div>
+
+                /* --- FUNDING TAB --- */
                 ) : activeTab === 'funding' ? (
                   <div className="space-y-8 md:space-y-12 animate-in fade-in zoom-in-95 duration-500">
                     <div className="text-center space-y-3 md:space-y-4 mb-8 md:mb-12 pt-2 md:pt-6">
@@ -394,7 +412,6 @@
                       <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 tracking-tight">$1.5M Series Seed</h2>
                       <p className="text-base md:text-xl text-slate-300 font-light max-w-2xl mx-auto">We are one of the rare seed series companies that possess <span className="font-bold text-white">real traction and revenue</span>, not just ideas.</p>
                     </div>
-                    
                      <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-600 text-center space-y-4 shadow-2xl">
                        <h3 className="text-xl md:text-2xl font-bold text-white">Ready to explore the data room?</h3>
                        <p className="text-sm md:text-base text-slate-400 mb-4 md:mb-6">Contact our executive team for investment inquiries.</p>
@@ -403,6 +420,8 @@
                        </button>
                     </div>
                   </div>
+
+                /* --- PORTFOLIO DYNAMIC TABS --- */
                 ) : (
                   <div className="animate-in fade-in zoom-in-95 duration-500 space-y-6 md:space-y-8 pt-2 md:pt-4">
                     <div className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-5 pb-5 border-b ${portfolio[activeTab].theme.borderMain}`}>
@@ -415,8 +434,6 @@
                              <p className={`text-sm md:text-lg font-medium opacity-90 mt-1 ${portfolio[activeTab].theme.primaryText}`}>{portfolio[activeTab].tagline}</p>
                            </div>
                        </div>
-                       
-                       {/* DYNAMIC EXTERNAL LINK BUTTON - Full Width on Mobile */}
                        {portfolio[activeTab].link && (
                            <a href={portfolio[activeTab].link.url} target="_blank" rel="noopener noreferrer" 
                               className={`w-full md:w-auto justify-center px-6 py-3.5 rounded-xl font-bold transition-all whitespace-nowrap bg-slate-900 border ${portfolio[activeTab].theme.borderAccent} ${portfolio[activeTab].theme.primaryText} hover:bg-slate-800 shadow-lg flex items-center gap-2`}>
@@ -424,19 +441,16 @@
                            </a>
                        )}
                     </div>
-
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
                       <div className="lg:col-span-2 space-y-6 md:space-y-8">
                         <section className={`p-5 md:p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-lg`}>
                           <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText}`}>Company Overview</h3>
                           <p className={textStyles.body}>{portfolio[activeTab].description}</p>
                         </section>
-
                         <section className={`p-5 md:p-6 rounded-2xl border ${portfolio[activeTab].theme.bgGradient} ${portfolio[activeTab].theme.borderAccent} shadow-lg`}>
                           <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText}`}><Network className="w-5 h-5" /> Ecosystem Synergy</h3>
                           <p className={textStyles.body}>{portfolio[activeTab].synergy}</p>
                         </section>
-
                         <section className={`p-5 md:p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-xl overflow-hidden`}>
                           <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText} mb-4 md:mb-6`}><PieChart className="w-5 h-5" /> Analytics & Market Edge</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -456,7 +470,6 @@
                           </div>
                         </section>
                       </div>
-
                       <div className="space-y-5 md:space-y-6">
                         <div className={`p-5 md:p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-lg`}>
                           <h4 className={textStyles.metricLabel}>Current Traction</h4>
@@ -477,10 +490,10 @@
                   <p className="text-slate-500 text-sm font-medium">&copy; 2026 MiJory LLC. All rights reserved.</p>
               </footer>
 
-              {/* Z-40 Mobile Footer NavBar - Solid Background */}
+              {/* Z-40 Mobile Footer NavBar */}
               <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-slate-800 p-3 flex overflow-x-auto gap-2 z-40 hide-scrollbar shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
-                 <button onClick={() => setContactModalOpen(true)} className="px-5 py-3 whitespace-nowrap text-sm font-bold rounded-xl border bg-blue-900/30 border-blue-500/50 text-blue-400 shadow-sm active:scale-95 transition-transform">Contact</button>
                  <button onClick={() => setActiveTab('ecosystem')} className={`px-5 py-3 whitespace-nowrap text-sm font-bold rounded-xl border shadow-sm active:scale-95 transition-transform ${activeTab === 'ecosystem' ? 'bg-slate-800 text-white border-slate-600' : 'bg-slate-900/80 border-slate-800 text-slate-400'}`}>Overview</button>
+                 <button onClick={() => setActiveTab('team')} className={`px-5 py-3 whitespace-nowrap text-sm font-bold rounded-xl border shadow-sm active:scale-95 transition-transform ${activeTab === 'team' ? 'bg-slate-800 text-white border-slate-600' : 'bg-slate-900/80 border-slate-800 text-slate-400'}`}>Leadership</button>
                   {Object.values(portfolio).map((company) => (
                     <button key={company.id} onClick={() => setActiveTab(company.id)} className={`px-5 py-3 whitespace-nowrap text-sm font-bold rounded-xl border shadow-sm active:scale-95 transition-transform ${activeTab === company.id ? company.theme.tabColor : 'bg-slate-900/80 border-slate-800 text-slate-400'}`}>{company.name}</button>
                   ))}
