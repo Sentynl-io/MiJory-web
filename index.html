@@ -9,11 +9,14 @@
     
     <meta name="description" content="MiJory Holdings operates a vertically integrated portfolio bridging physical health optimization with a highly scalable digital data moat.">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
@@ -48,6 +51,11 @@
         }
         
         body.modal-open { overflow: hidden; }
+
+        /* Custom Animations for Decks */
+        @keyframes float { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
+        .animate-float { animation: float 2s infinite; }
+        .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-200 antialiased selection:bg-blue-500/30">
@@ -57,17 +65,11 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // ====================================================================
-        // UPDATE FUNDING NUMBERS HERE
-        // ====================================================================
         const TARGET_RAISE = 1500000;
-        const CURRENT_RAISED = 800000; // Change this value when you raise more money!
-        // ====================================================================
+        const CURRENT_RAISED = 800000;
 
-        const IconBase = ({ children, className = "" }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>
-        );
-
+        // --- SVGs ---
+        const IconBase = ({ children, className = "" }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{children}</svg>;
         const QrCode = ({ className }) => <IconBase className={className}><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></IconBase>;
         const ShieldCheck = ({ className }) => <IconBase className={className}><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2-1 4-2 7-2 2.89 0 4.7 1 6.8 2a1 1 0 0 1 .5.89z"/><path d="m9 12 2 2 4-4"/></IconBase>;
         const Dna = ({ className }) => <IconBase className={className}><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="m17 6-2.5-2.5"/><path d="m14 8-1-1"/><path d="m7 18 2.5 2.5"/><path d="m3.5 14.5.5.5"/><path d="m20 9 .5.5"/><path d="m6.5 12.5 1 1"/><path d="m16.5 10.5 1 1"/><path d="m10 16-1.5-1.5"/></IconBase>;
@@ -87,109 +89,306 @@
         const Users = ({ className }) => <IconBase className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></IconBase>;
         const LinkedinIcon = ({ className }) => <IconBase className={className}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></IconBase>;
 
-        // --- CUSTOM ANIMATED FUNDING BAR COMPONENT ---
+        // --- FUNDING BAR COMPONENT ---
         const FundingBar = ({ current, target }) => {
             const [width, setWidth] = useState(0);
             const [displayAmount, setDisplayAmount] = useState(0);
             const percentage = Math.min(100, (current / target) * 100);
 
             useEffect(() => {
-                // Trigger the width animation shortly after mounting
                 const timer = setTimeout(() => setWidth(percentage), 100);
-
-                // Animate the numbers counting up
-                const duration = 1500; 
-                const steps = 60;
-                const stepTime = Math.abs(Math.floor(duration / steps));
-                let currentStep = 0;
-
+                const duration = 1500; const steps = 60; const stepTime = Math.abs(Math.floor(duration / steps)); let currentStep = 0;
                 const interval = setInterval(() => {
                     currentStep++;
-                    const progress = currentStep / steps;
-                    const easeProgress = 1 - Math.pow(1 - progress, 4); // easeOutQuart
+                    const progress = currentStep / steps; const easeProgress = 1 - Math.pow(1 - progress, 4);
                     setDisplayAmount(Math.floor(easeProgress * current));
-
-                    if (currentStep >= steps) {
-                        clearInterval(interval);
-                        setDisplayAmount(current);
-                    }
+                    if (currentStep >= steps) { clearInterval(interval); setDisplayAmount(current); }
                 }, stepTime);
-
-                return () => {
-                    clearTimeout(timer);
-                    clearInterval(interval);
-                };
+                return () => { clearTimeout(timer); clearInterval(interval); };
             }, [current, percentage]);
 
             const formatCurrency = (val) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(val);
 
             return (
                 <div className="w-full max-w-4xl mx-auto mt-12 mb-16 p-6 md:p-10 bg-slate-900 border border-slate-700/50 rounded-3xl shadow-2xl relative overflow-hidden">
-                    {/* Background glow */}
                     <div className="absolute inset-0 bg-emerald-500/5 blur-3xl pointer-events-none"></div>
-                    
                     <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
                         <div>
                             <p className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-1">Raised So Far</p>
-                            <h3 className="text-5xl md:text-6xl font-black text-white tracking-tighter drop-shadow-md">
-                                {formatCurrency(displayAmount)}
-                            </h3>
+                            <h3 className="text-5xl md:text-6xl font-black text-white tracking-tighter drop-shadow-md">{formatCurrency(displayAmount)}</h3>
                         </div>
                         <div className="text-left md:text-right">
                             <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Target</p>
                             <p className="text-xl md:text-2xl font-bold text-slate-300">{formatCurrency(target)}</p>
                         </div>
                     </div>
-
-                    {/* The Track */}
                     <div className="h-8 md:h-10 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)] relative">
-                        {/* The Animated Fill */}
-                        <div 
-                            className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full relative flex items-center justify-end pr-4"
-                            style={{ 
-                                width: `${width}%`, 
-                                transition: 'width 1.5s cubic-bezier(0.16, 1, 0.3, 1)' 
-                            }}
-                        >
-                            {/* Inner shine */}
+                        <div className="h-full bg-gradient-to-r from-emerald-500 to-cyan-400 rounded-full relative flex items-center justify-end pr-4" style={{ width: `${width}%`, transition: 'width 1.5s cubic-bezier(0.16, 1, 0.3, 1)' }}>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-white/20 rounded-full"></div>
-                            {/* Moving flare at the leading edge */}
                             <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-r from-transparent to-white/40 blur-sm translate-x-1/2"></div>
-                            
-                            {/* Dynamic Percentage Pill (Only show if bar is wide enough) */}
-                            {width > 15 && (
-                                <span className="relative z-10 text-xs md:text-sm font-bold text-white drop-shadow-md">
-                                    {percentage.toFixed(1)}%
-                                </span>
-                            )}
+                            {width > 15 && <span className="relative z-10 text-xs md:text-sm font-bold text-white drop-shadow-md">{percentage.toFixed(1)}%</span>}
                         </div>
                     </div>
                 </div>
             );
         };
 
+        // ============================================================================
+        // SLIDE DECK COMPONENTS (Used for Vitalis and BioTide responsive presentations)
+        // ============================================================================
+        const SlideWrapper = ({ children, className = "" }) => (
+            <div className={`w-full max-w-6xl mx-auto bg-[#010409]/95 border border-slate-800 rounded-[2rem] p-6 md:p-14 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.8)] flex flex-col mb-12 relative overflow-hidden text-slate-200 ${className}`}>
+                {children}
+            </div>
+        );
+
+        const SectionTag = ({ text, colorClass = "text-cyan-400" }) => (
+            <div className={`text-xs md:text-sm uppercase tracking-[0.2em] font-bold mb-4 md:mb-6 ${colorClass}`}>{text}</div>
+        );
+
+        const SlideTitle = ({ text, highlightColor = "border-purple-500" }) => (
+            <h2 className={`font-jakarta text-3xl md:text-4xl font-bold mb-6 md:mb-8 border-l-[6px] md:border-l-[10px] pl-4 md:pl-6 text-white ${highlightColor}`}>{text}</h2>
+        );
+
+        const VitalisDeck = () => {
+            const gradText = "text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-sky-500 to-purple-500";
+            return (
+                <div className="animate-in fade-in zoom-in-95 duration-700 space-y-4">
+                    {/* Slide 1: Cover */}
+                    <SlideWrapper>
+                        <div className="flex flex-col items-center justify-center text-center py-10 md:py-20">
+                            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-cyan-400 flex items-center justify-center bg-[radial-gradient(circle,rgba(0,255,255,0.05),transparent)] shadow-[0_0_40px_rgba(0,255,255,0.4)] mb-6 relative">
+                                <span className={`font-jakarta text-5xl md:text-[65px] font-extrabold absolute ${gradText}`}>V</span>
+                            </div>
+                            <div className="font-jakarta text-3xl md:text-5xl font-extrabold tracking-[0.2em] uppercase mb-6 md:mb-10">
+                                <span className={gradText}>VITALIS™</span> <span className="text-white">LONGEVITY™</span>
+                            </div>
+                            <SectionTag text="Optimum Wellness Franchise integrating AI, product purity, and anti-aging." />
+                            <h1 className="font-jakarta text-5xl md:text-[82px] leading-[0.95] font-extrabold tracking-tighter text-white mt-4">
+                                OPTIMIZE THE <br/><span className="text-cyan-400">HUMAN ASSET</span>
+                            </h1>
+                            <p className="mt-8 text-lg md:text-2xl text-slate-400 font-light">The $1.8 Trillion Convergence of AI Technology, Longevity, and Wellness.</p>
+                        </div>
+                    </SlideWrapper>
+
+                    {/* Slide 2: Tech & Longevity */}
+                    <SlideWrapper>
+                        <SectionTag text="Market Nexus" />
+                        <SlideTitle text="The Convergence of Technology & Longevity" />
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+                            <div className="flex justify-center order-2 lg:order-1">
+                                <div className="w-64 h-[480px] shrink-0 bg-black border-[8px] border-slate-800 rounded-[2.5rem] p-3 shadow-[0_0_50px_rgba(0,255,255,0.2)]">
+                                    <div className="bg-[#010409] h-full rounded-[1.5rem] p-5 flex flex-col gap-4 overflow-hidden">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-[10px] text-cyan-400 font-extrabold">AETHER™ AI ENGINE</span>
+                                            <div className="w-2.5 h-2.5 bg-cyan-400 rounded-full shadow-[0_0_10px_#00ffff] animate-float"></div>
+                                        </div>
+                                        <div className="bg-white/5 p-3 rounded-xl">
+                                            <div className="text-[9px] text-slate-400">BIOLOGICAL AGE SCORE</div>
+                                            <div className="text-2xl font-extrabold text-white">34.2 <span className="text-[10px] text-emerald-400">-4.1 YRS</span></div>
+                                        </div>
+                                        <div className="h-20 border-b border-slate-800 flex items-end gap-1.5 pb-1">
+                                            <div className="flex-1 bg-cyan-400 rounded-t-sm h-[40%]"></div>
+                                            <div className="flex-1 bg-cyan-400 rounded-t-sm h-[60%]"></div>
+                                            <div className="flex-1 bg-cyan-400 rounded-t-sm h-[55%]"></div>
+                                            <div className="flex-1 bg-cyan-400 rounded-t-sm h-[85%]"></div>
+                                            <div className="flex-1 bg-cyan-400 rounded-t-sm h-[100%]"></div>
+                                        </div>
+                                        <div className="text-[10px] text-center p-2 border border-cyan-400/50 rounded-lg text-slate-300">
+                                            DAILY GOAL: COMPLETE BIO-SYNC <i className="fa-solid fa-trophy text-yellow-400 ml-1"></i>
+                                        </div>
+                                        <p className="text-[10px] text-slate-400 leading-relaxed italic">AI Insight: "Peptide absorption optimal. Increase hydration for further GHK-Cu synthesis."</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="order-1 lg:order-2">
+                                <h3 className="text-2xl font-bold text-white mb-4">Biological Autopilot</h3>
+                                <p className="text-slate-300 mb-6">Technology is no longer a luxury in longevity; it is the primary driver of patient retention and institutional accuracy.</p>
+                                <ul className="space-y-4">
+                                    <li className="flex gap-4 items-start"><i className="fa-solid fa-chart-line text-cyan-400 mt-1"></i> <div><strong className="text-white">Engaged Longevity:</strong> Gamification leads to a 400% increase in patient touchpoints daily.</div></li>
+                                    <li className="flex gap-4 items-start"><i className="fa-solid fa-microchip text-cyan-400 mt-1"></i> <div><strong className="text-white">Data-Driven Lifespan:</strong> AI provides real-time protocol shifts based on live biomarkers from wearables.</div></li>
+                                    <li className="flex gap-4 items-start"><i className="fa-solid fa-shield-check text-cyan-400 mt-1"></i> <div><strong className="text-white">Accurate Insight:</strong> Removes human error in dosing via the <span className="text-emerald-400 font-bold">TrakPath™</span> data loop.</div></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </SlideWrapper>
+
+                    {/* Slide 3: Unit Optimal Stats */}
+                    <SlideWrapper>
+                        <SectionTag text="Efficiency by Design" />
+                        <SlideTitle text="Vitalis™ Unit Optimal Statistics" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+                            <div className="bg-slate-900/90 border border-cyan-500/50 rounded-3xl p-6 md:p-8">
+                                <i className="fa-solid fa-hotel text-4xl text-cyan-400 mb-4"></i>
+                                <h3 className="text-xl font-bold text-white mb-3">High-Efficiency Footprint</h3>
+                                <p className="text-slate-400 text-sm mb-6">Designed for elite high-wealth corridors with a focused footprint of <strong>1,200 – 1,400 Square Feet</strong>.</p>
+                                <ul className="space-y-3 text-sm">
+                                    <li className="flex items-center gap-3"><i className="fa-solid fa-users text-cyan-400"></i> 4–5 Specialized Employees per Unit</li>
+                                    <li className="flex items-center gap-3"><i className="fa-solid fa-user-check text-cyan-400"></i> 350 – 400 Optimal Retained Patients</li>
+                                    <li className="flex items-center gap-3"><i className="fa-solid fa-gem text-cyan-400"></i> Premium "Med-Spa Sanctuary" Aesthetic</li>
+                                </ul>
+                            </div>
+                            <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 md:p-8">
+                                <i className="fa-solid fa-venus-mars text-4xl text-purple-500 mb-4"></i>
+                                <h3 className="text-xl font-bold text-white mb-3">Advanced Stacks</h3>
+                                <p className="text-slate-400 text-sm mb-6">Every unit provides specialized biological optimization for both male and female pathways across all modalities.</p>
+                                <div className="grid grid-cols-3 gap-4 text-center mt-auto">
+                                    <div className="p-4 bg-slate-800/50 rounded-xl"><i className="fa-solid fa-flask text-cyan-400 text-xl mb-2"></i><p className="text-[10px] font-bold">PEPTIDES</p></div>
+                                    <div className="p-4 bg-slate-800/50 rounded-xl"><i className="fa-solid fa-droplet text-sky-500 text-xl mb-2"></i><p className="text-[10px] font-bold">HRT</p></div>
+                                    <div className="p-4 bg-slate-800/50 rounded-xl"><i className="fa-solid fa-bolt text-purple-500 text-xl mb-2"></i><p className="text-[10px] font-bold">RECOVERY</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </SlideWrapper>
+
+                    {/* Slide 4: ShowCase */}
+                    <SlideWrapper>
+                        <SectionTag text="Lobby & Supply Showcase" />
+                        <SlideTitle text="Premium Display Infographic" />
+                        <div className="w-full min-h-[420px] bg-gradient-to-b from-[#050a14] to-black rounded-3xl border border-slate-800 p-6 md:p-10 flex flex-col relative overflow-hidden">
+                            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 w-full mb-8 z-10">
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-[inset_0_0_20px_rgba(0,255,255,0.03)]"><i className="fa-solid fa-vial text-3xl text-amber-500 mb-3"></i><span className="text-[10px] font-bold text-white tracking-wider">Peptide Vials</span></div>
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-[inset_0_0_20px_rgba(0,255,255,0.03)]"><i className="fa-solid fa-spray-can text-3xl text-cyan-400 mb-3"></i><span className="text-[10px] font-bold text-white tracking-wider">Nasal Sprays</span></div>
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-[inset_0_0_20px_rgba(0,255,255,0.03)]"><i className="fa-solid fa-capsules text-3xl text-purple-500 mb-3"></i><span className="text-[10px] font-bold text-white tracking-wider">Capsules</span></div>
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-[inset_0_0_20px_rgba(0,255,255,0.03)]"><i className="fa-solid fa-flask-vial text-3xl text-sky-500 mb-3"></i><span className="text-[10px] font-bold text-white tracking-wider">Supplements</span></div>
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-[inset_0_0_20px_rgba(0,255,255,0.03)] col-span-2 md:col-span-1"><i className="fa-solid fa-wand-magic-sparkles text-3xl text-pink-500 mb-3"></i><span className="text-[10px] font-bold text-white tracking-wider">Cosmetics</span></div>
+                            </div>
+                            
+                            <div className="flex-1 flex items-center justify-center gap-12 w-full opacity-10 absolute inset-0 pointer-events-none">
+                                <i className="fa-solid fa-spa text-9xl -rotate-12"></i>
+                                <i className="fa-solid fa-heart-pulse text-9xl rotate-12"></i>
+                            </div>
+
+                            <div className="w-[80%] md:w-[50%] h-12 bg-[#111] border-t-4 border-cyan-400 shadow-[0_-10px_30px_rgba(0,255,255,0.4)] mt-auto mx-auto rounded-t-lg flex items-center justify-center z-10">
+                                <span className="text-[10px] font-bold tracking-[0.3em] text-white/80">VITALIS™ PREMIUM COLLECTION</span>
+                            </div>
+                            <p className="text-center text-[10px] text-slate-500 mt-4 z-10">Purity verified via <span className="text-emerald-400 font-bold">TrakPath™</span> Data Integrity.</p>
+                        </div>
+                    </SlideWrapper>
+
+                    {/* Slide 5: Revenue */}
+                    <SlideWrapper>
+                        <SectionTag text="Network Financials" />
+                        <SlideTitle text="Vitalis™ Franchise Unit Revenue" />
+                        
+                        <div className="w-full h-64 border-b-2 border-slate-800 flex items-end justify-between px-2 md:px-10 pb-2 mb-10 relative mt-8">
+                            <div className="flex flex-col items-center w-16 md:w-28 relative z-10">
+                                <div className="text-xs md:text-sm font-bold text-white mb-2">$1.2M</div>
+                                <div className="w-full bg-gradient-to-t from-cyan-400 to-sky-500 rounded-t-lg shadow-[0_0_20px_rgba(0,255,255,0.3)]" style={{height: '64px'}}></div>
+                                <div className="text-[8px] md:text-[10px] font-bold text-slate-400 absolute -bottom-6 whitespace-nowrap">Y1–2 (5 Units)</div>
+                            </div>
+                            <div className="flex flex-col items-center w-16 md:w-28 relative z-10">
+                                <div className="text-xs md:text-sm font-bold text-white mb-2">$1.8M</div>
+                                <div className="w-full bg-gradient-to-t from-cyan-400 to-sky-500 rounded-t-lg shadow-[0_0_20px_rgba(0,255,255,0.3)]" style={{height: '107px'}}></div>
+                                <div className="text-[8px] md:text-[10px] font-bold text-slate-400 absolute -bottom-6 whitespace-nowrap">Y3–4</div>
+                            </div>
+                            <div className="flex flex-col items-center w-16 md:w-28 relative z-10">
+                                <div className="text-xs md:text-sm font-bold text-white mb-2">$2.6M</div>
+                                <div className="w-full bg-gradient-to-t from-cyan-400 to-sky-500 rounded-t-lg shadow-[0_0_20px_rgba(0,255,255,0.3)]" style={{height: '158px'}}></div>
+                                <div className="text-[8px] md:text-[10px] font-bold text-slate-400 absolute -bottom-6 whitespace-nowrap">Y5–6 (40 Units)</div>
+                            </div>
+                            <div className="flex flex-col items-center w-16 md:w-28 relative z-10">
+                                <div className="text-xs md:text-sm font-bold text-cyan-400 mb-2 drop-shadow-md">$4.8M</div>
+                                <div className="w-full bg-gradient-to-t from-cyan-400 to-sky-500 rounded-t-lg shadow-[0_0_20px_rgba(0,255,255,0.3)]" style={{height: '240px'}}></div>
+                                <div className="text-[8px] md:text-[10px] font-bold text-white absolute -bottom-6 whitespace-nowrap">Y9–10 (150+ Units)</div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 md:gap-6 mt-8">
+                            <div className="p-4 border border-cyan-500/50 rounded-2xl text-center bg-slate-900/50">
+                                <p className="text-[10px] md:text-xs text-slate-400 font-bold mb-1">OPTIMAL PATIENTS / UNIT</p>
+                                <p className="text-2xl md:text-3xl font-extrabold text-white">350 – 400</p>
+                            </div>
+                            <div className="p-4 border border-purple-500/50 rounded-2xl text-center bg-slate-900/50">
+                                <p className="text-[10px] md:text-xs text-slate-400 font-bold mb-1">AVG. GROSS REV / UNIT</p>
+                                <p className="text-2xl md:text-3xl font-extrabold text-cyan-400">$2.8M+</p>
+                            </div>
+                        </div>
+                    </SlideWrapper>
+
+                    {/* Slide 6: CTA */}
+                    <SlideWrapper className="items-center justify-center text-center !bg-[radial-gradient(circle_at_center,#001a1a_0%,#010409_100%)] min-h-[60vh]">
+                        <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border-2 border-cyan-400 flex items-center justify-center bg-[radial-gradient(circle,rgba(0,255,255,0.05),transparent)] shadow-[0_0_40px_rgba(0,255,255,0.4)] mb-8 relative">
+                                <span className={`font-jakarta text-4xl md:text-[55px] font-extrabold absolute ${gradText}`}>V</span>
+                        </div>
+                        <SectionTag text="Secure Your Territory" />
+                        <h2 className="font-jakarta text-4xl md:text-[72px] leading-[0.95] font-extrabold tracking-tighter text-white">
+                            JOIN THE <br/><span className="text-cyan-400">REVOLUTION</span>
+                        </h2>
+                        <p className="mt-6 mb-10 text-base md:text-xl text-slate-400 font-light max-w-2xl mx-auto">Partner with <span className="text-pink-500 font-bold">MiJory Holdings™</span> to build the world's most advanced human performance infrastructure.</p>
+                        
+                        <a href="mailto:franchise@vitalislongevity.com" className="inline-block p-6 md:px-12 md:py-6 rounded-2xl border-2 border-cyan-400 hover:bg-cyan-400/10 transition-colors shadow-[0_0_30px_rgba(0,255,255,0.15)] mb-8 group cursor-pointer">
+                            <p className="text-white font-extrabold text-xl md:text-3xl m-0 group-hover:text-cyan-300 transition-colors">franchise@vitalislongevity.com</p>
+                        </a>
+                        <p className="text-xs text-slate-500">Integrity Powered by <span className="text-emerald-400 font-bold">TrakPath™</span></p>
+                    </SlideWrapper>
+                </div>
+            )
+        };
+
+        const BiotideDeck = () => {
+            const gradText = "text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-500";
+            return (
+                <div className="animate-in fade-in zoom-in-95 duration-700 space-y-4">
+                    <SlideWrapper>
+                        <div className="flex flex-col items-center justify-center text-center py-10 md:py-20">
+                            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-indigo-500 flex items-center justify-center bg-[radial-gradient(circle,rgba(99,102,241,0.05),transparent)] shadow-[0_0_40px_rgba(99,102,241,0.4)] mb-6 relative">
+                                <span className={`font-jakarta text-5xl md:text-[65px] font-extrabold absolute ${gradText}`}>B</span>
+                            </div>
+                            <div className="font-jakarta text-3xl md:text-5xl font-extrabold tracking-[0.2em] uppercase mb-6 md:mb-10">
+                                <span className={gradText}>BIOTIDE™</span> <span className="text-white">PEPTIDES</span>
+                            </div>
+                            <SectionTag text="Regulatory-Compliant B2B Precision Peptides & Biologics" colorClass="text-indigo-400" />
+                            <h1 className="font-jakarta text-5xl md:text-[82px] leading-[0.95] font-extrabold tracking-tighter text-white mt-4">
+                                PURITY MEETS <br/><span className="text-indigo-400">PRECISION</span>
+                            </h1>
+                            <p className="mt-8 text-lg md:text-2xl text-slate-400 font-light">Powering the Clinician-Dispensed Wellness Market.</p>
+                        </div>
+                    </SlideWrapper>
+
+                    <SlideWrapper>
+                        <SectionTag text="Market Synergy" colorClass="text-indigo-400" />
+                        <SlideTitle text="The BioTide Advantage" highlightColor="border-indigo-500" />
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 items-center">
+                            <div>
+                                <h3 className="text-2xl font-bold text-white mb-4">Unassailable Supply Chain</h3>
+                                <p className="text-slate-300 mb-6">In a market plagued by opaque compounding and gray-market sourcing, BioTide guarantees provenance.</p>
+                                <ul className="space-y-4">
+                                    <li className="flex gap-4 items-start"><i className="fa-solid fa-file-medical text-indigo-400 mt-1"></i> <div><strong className="text-white">Regulatory Compliance:</strong> Strict adherence to 503a/503b compounding requirements.</div></li>
+                                    <li className="flex gap-4 items-start"><i className="fa-solid fa-chart-pie text-indigo-400 mt-1"></i> <div><strong className="text-white">High-Margin B2B:</strong> Supplying the exploding network of Vitalis Longevity and independent clinics.</div></li>
+                                    <li className="flex gap-4 items-start"><i className="fa-solid fa-qrcode text-indigo-400 mt-1"></i> <div><strong className="text-white">TrakPath™ Integration:</strong> Every vial features a scannable QR code proving GMP certification and third-party lab testing.</div></li>
+                                </ul>
+                            </div>
+                            <div className="bg-slate-900/90 border border-indigo-500/30 rounded-3xl p-6 md:p-8 text-center shadow-xl">
+                                 <i className="fa-solid fa-dna text-6xl text-indigo-400 mb-6"></i>
+                                 <h4 className="text-xl font-bold text-white mb-2">$55 Billion TAM</h4>
+                                 <p className="text-sm text-slate-400">The projected size of the peptide market by 2026, growing at a 10.9% CAGR.</p>
+                            </div>
+                        </div>
+                    </SlideWrapper>
+                </div>
+            )
+        };
+
+        // ============================================================================
+        // MAIN APP
+        // ============================================================================
         const App = () => {
           const [activeTab, setActiveTab] = useState('ecosystem');
           const [isContactModalOpen, setContactModalOpen] = useState(false);
 
           useEffect(() => {
-            if (isContactModalOpen) {
-              document.body.classList.add('modal-open');
-            } else {
-              document.body.classList.remove('modal-open');
-            }
+            if (isContactModalOpen) { document.body.classList.add('modal-open'); } 
+            else { document.body.classList.remove('modal-open'); }
           }, [isContactModalOpen]);
 
           const textStyles = {
             fontFamily: "font-sans",
-            header: "text-3xl md:text-4xl font-extrabold tracking-tight",
-            tagline: "text-lg font-medium opacity-80 mt-1",
             sectionTitle: "text-lg font-bold mb-4 flex items-center gap-2",
             body: "text-slate-300 leading-relaxed text-sm md:text-base",
             metricLabel: "text-xs font-bold text-slate-500 uppercase tracking-wider mb-2",
           };
 
-          // --- LEADERSHIP TEAM DATA ---
           const leadershipTeam = [
             { id: 1, name: "Josh McIver", title: "Founding Partner", image: "images/josh.jpg", linkedin: "https://www.linkedin.com/in/josh-mciver" },
             { id: 2, name: "Mike Larsen", title: "Founding Partner", image: "images/mike.jpg", linkedin: "https://linkedin.com/in/mike-larsen-5ab356364" },
@@ -204,7 +403,7 @@
             { id: 8, name: "Pete Anewalt", title: "Strategic Advisor", image: "images/pete.jpg", linkedin: "https://linkedin.com/in/peteranewalt" }
           ];
 
-          // --- PORTFOLIO DATA ---
+          // --- FULL PORTFOLIO DATA RESTORED (Links, synergies, infographics) ---
           const portfolio = {
             trakpath: {
               id: 'trakpath', name: 'TrakPath', tagline: 'Dynamic Supply Chain & Digital Twins', icon: <QrCode className="w-8 h-8" />, link: { url: "https://trakpath.mijory.com", text: "Explore TrakPath Site \u2192" },
@@ -228,28 +427,8 @@
               theme: { primaryText: "text-slate-300", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-gray-400", bgGradient: "bg-gradient-to-br from-slate-800/20 to-slate-900", borderMain: "border-slate-600/30", borderAccent: "border-slate-400/40", iconBox: "bg-slate-800/40 border-slate-500/50 text-slate-300", barFill: "bg-gradient-to-r from-slate-400 to-gray-300", tabColor: "bg-slate-800/40 text-slate-300 border-slate-500/30" },
               infographic: { edgeTitle: "Granularity of Risk Data", edgeMetrics: [{ label: "Sentynl Mobile", value: 95, display: "High Precision" }, { label: "Traditional", value: 30, display: "Estimates" }], marketTitle: "InsurTech Growth", marketMetrics: [{ label: "SCRM Projection", value: "$16.9B", height: "45%" }, { label: "Global InsurTech", value: "$50.0B", height: "95%" }] }
             },
-            biotide: {
-              id: 'biotide', name: 'BioTide', tagline: 'B2B Precision Peptides & Biologics', icon: <Dna className="w-8 h-8" />,
-              description: 'A dedicated B2B supplier of regulatory-compliant, white-label peptides to licensed U.S. practitioners and wellness clinics.',
-              synergy: 'Integrates TrakPath QR codes on every vial, providing clinics with unassailable proof of GMP certification and lab testing compliance.',
-              advantages: ['Strict regulatory compliance (503a/503b)', 'High-margin B2B private label model', 'TrakPath-enabled transparent supply chain'],
-              traction: 'Active sales reps in CO, ID, and CA. Established partnerships with GMP-certified manufacturers.',
-              tam: '$55 Billion (2026 Peptide Market)',
-              forecast: 'By 2031, BioTide is projected to capture significant share of the 10.9% CAGR clinician-dispensed wellness market.',
-              theme: { primaryText: "text-indigo-400", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400", bgGradient: "bg-gradient-to-br from-indigo-900/10 to-slate-900", borderMain: "border-indigo-500/20", borderAccent: "border-purple-500/30", iconBox: "bg-indigo-900/20 border-indigo-500/40 text-indigo-400", barFill: "bg-gradient-to-r from-indigo-500 to-purple-400", tabColor: "bg-indigo-900/20 text-indigo-400 border-indigo-500/30" },
-              infographic: { edgeTitle: "B2B Trust Deficit", edgeMetrics: [{ label: "BioTide Verified", value: 95, display: "High Trust" }, { label: "Standard Wholesaler", value: 40, display: "Opaque" }], marketTitle: "Peptide Market Projection", marketMetrics: [{ label: "2026 TAM", value: "$55B", height: "40%" }, { label: "2035 Target", value: "$162B", height: "100%" }] }
-            },
-            vitalis: {
-              id: 'vitalis', name: 'Vitalis Longevity', tagline: 'AI-Integrated Wellness Franchise', icon: <Activity className="w-8 h-8" />,
-              description: 'A scalable, turnkey wellness and anti-aging franchise modeled for operational efficiency. It brings elite bio-hacking to the mainstream.',
-              synergy: 'Serves as the premium retail touchpoint, utilizing BioTide\'s private-label peptides while feeding anonymized patient efficacy data back into the ecosystem.',
-              advantages: ['AI-powered diagnostics and genomic profiling', 'Turnkey franchise operations', 'Integrated regenerative medicine protocols'],
-              traction: 'In active development with the first pilot franchise location slated for opening in Q3 2026.',
-              tam: '$60B+ (Global Longevity Clinics)',
-              forecast: 'Multi-state rollout achieving 100+ active franchise locations by 2031.',
-              theme: { primaryText: "text-amber-500", gradientText: "text-transparent bg-clip-text bg-gradient-to-r from-amber-500 to-yellow-400", bgGradient: "bg-gradient-to-br from-amber-900/10 to-slate-900", borderMain: "border-amber-500/20", borderAccent: "border-yellow-500/30", iconBox: "bg-amber-900/20 border-amber-500/40 text-amber-500", barFill: "bg-gradient-to-r from-amber-500 to-yellow-400", tabColor: "bg-amber-900/20 text-amber-400 border-amber-500/30" },
-              infographic: { edgeTitle: "Protocol Scalability", edgeMetrics: [{ label: "Vitalis AI Model", value: 90, display: "Rapid Scaling" }, { label: "Concierge Clinic", value: 25, display: "Manual" }], marketTitle: "Global Longevity Market", marketMetrics: [{ label: "Current Demand", value: "$60B+", height: "55%" }, { label: "Target Expansion", value: "$100B+", height: "90%" }] }
-            },
+            biotide: { id: 'biotide', name: 'BioTide', theme: { tabColor: "bg-indigo-900/20 text-indigo-400 border-indigo-500/30" } },
+            vitalis: { id: 'vitalis', name: 'Vitalis Longevity', theme: { tabColor: "bg-cyan-900/20 text-cyan-400 border-cyan-500/30" } },
             rightroots: {
               id: 'rightroots', name: 'Right Roots', tagline: 'Functional Beverages & Nutraceuticals', icon: <Leaf className="w-8 h-8" />, link: { url: "https://kavakazees.com/", text: "Visit Kavakazees Website \u2192" },
               description: 'Right Roots transcends traditional beverages by offering functional social beverages (like Kava Kazees) and fine-tuned nutraceutical supplements.',
@@ -264,9 +443,8 @@
           };
 
           return (
-            <div className={`min-h-screen bg-slate-950 text-slate-200 flex flex-col ${textStyles.fontFamily}`}>
+            <div className={`min-h-screen bg-[#020617] text-slate-200 flex flex-col ${textStyles.fontFamily}`}>
               
-              {/* Z-50 Contact Modal Overlay */}
               {isContactModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center md:p-6 bg-slate-950/95 backdrop-blur-md animate-in fade-in duration-200" onClick={() => setContactModalOpen(false)}>
                   <div className="bg-slate-900 w-full h-full md:h-auto md:border md:border-blue-500/30 md:rounded-2xl md:max-w-4xl shadow-2xl flex flex-col md:max-h-[85vh]" onClick={e => e.stopPropagation()}>
@@ -318,125 +496,62 @@
                 </div>
               )}
 
-              {/* Z-30 Header */}
-              <header className="sticky top-0 z-30 bg-slate-950 md:bg-slate-950/90 md:backdrop-blur-md border-b border-slate-800 px-4 md:px-6 py-4">
-                <div className="max-w-7xl mx-auto">
-                  <div className="flex justify-center md:justify-start items-center gap-3 cursor-pointer mb-0 md:mb-5" onClick={() => setActiveTab('ecosystem')}>
-                    <Building2 className="w-7 h-7 md:w-8 md:h-8 text-blue-500" />
+              <header className="sticky top-0 z-30 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 px-4 md:px-6 py-4">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div className="flex items-center gap-3 cursor-pointer" onClick={() => setActiveTab('ecosystem')}>
+                    <Building2 className="w-8 h-8 text-blue-500" />
                     <div>
-                      <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white leading-none">MiJory LLC</h1>
-                      <p className="text-[10px] md:text-xs text-slate-400 uppercase tracking-widest font-semibold mt-1">Unified Ecosystem Portfolio</p>
+                      <h1 className="text-xl font-bold tracking-tight text-white leading-none">MiJory LLC</h1>
                     </div>
                   </div>
 
-                  <div className="hidden md:flex w-full items-center justify-between bg-slate-900/60 border border-slate-700/50 rounded-xl p-1.5 shadow-lg">
-                    <div className="flex items-center gap-1 flex-1 overflow-x-auto hide-scrollbar">
-                      <button onClick={() => setActiveTab('ecosystem')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'ecosystem' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>Overview</button>
-                      <button onClick={() => setActiveTab('team')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'team' ? 'bg-slate-800 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>Leadership</button>
-                      
+                  <div className="hidden md:flex flex-1 max-w-3xl justify-center">
+                    <div className="flex items-center gap-1 bg-slate-900/60 border border-slate-700/50 rounded-xl p-1.5 shadow-lg overflow-x-auto hide-scrollbar">
+                      <button onClick={() => setActiveTab('ecosystem')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'ecosystem' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>Overview</button>
+                      <button onClick={() => setActiveTab('team')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'team' ? 'bg-slate-800 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>Leadership</button>
                       {Object.values(portfolio).map((company) => (
-                        <button key={company.id} onClick={() => setActiveTab(company.id)} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === company.id ? company.theme.tabColor + ' shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>
-                          {company.name}
-                        </button>
+                        <button key={company.id} onClick={() => setActiveTab(company.id)} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === company.id ? company.theme.tabColor : 'text-slate-400 hover:text-white hover:bg-slate-800/50'}`}>{company.name}</button>
                       ))}
                     </div>
-                    <div className="flex items-center gap-2 pl-3 ml-2 border-l border-slate-700/50">
-                      <button onClick={() => setActiveTab('funding')} className={`px-4 py-2 text-sm font-bold rounded-lg transition-all border ${activeTab === 'funding' ? 'bg-emerald-900/30 text-emerald-400 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.2)]' : 'bg-transparent border-transparent text-emerald-500 hover:text-emerald-400 hover:bg-emerald-900/20'}`}>
-                        <span className="flex items-center gap-1"><DollarSign className="w-4 h-4"/> Seed</span>
-                      </button>
-                      <button onClick={() => setContactModalOpen(true)} className="px-5 py-2 text-sm font-bold rounded-lg transition-all border bg-blue-600/20 text-blue-400 border-blue-500/50 hover:bg-blue-600/40">
-                        Contact Team
-                      </button>
+                  </div>
+                  
+                  <div className="hidden md:flex gap-2 items-center">
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800/60 border border-slate-700/80 rounded-lg text-slate-300 text-xs font-bold mr-2 shadow-sm cursor-default" title="Controls implemented, prepping for formal audit">
+                      <ShieldCheck className="w-4 h-4 text-cyan-400" />
+                      SOC 2 Audit Ready
                     </div>
+                    <button onClick={() => setActiveTab('funding')} className="px-4 py-2 text-sm font-bold rounded-lg border border-emerald-500/50 text-emerald-500 hover:bg-emerald-900/20">Seed Round</button>
+                    <button onClick={() => setContactModalOpen(true)} className="px-5 py-2 text-sm font-bold rounded-lg transition-all border bg-blue-600/20 text-blue-400 border-blue-500/50 hover:bg-blue-600/40">
+                      Contact Team
+                    </button>
                   </div>
                 </div>
               </header>
 
               <main className="flex-1 max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12 pb-24 md:pb-12 w-full">
                 
-                {/* --- ECOSYSTEM TAB --- */}
-                {activeTab === 'ecosystem' ? (
-                  <div className="space-y-12 md:space-y-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                    <div className="text-center max-w-5xl mx-auto space-y-4 md:space-y-6 pt-4 md:pt-6">
-                      <div className="inline-block bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full text-xs md:text-sm font-semibold mb-2 md:mb-4 border border-blue-500/20">Incubating Tomorrow's Solutions</div>
-                      <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                        Empowering Innovation <br/>Across <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">Industries</span>
-                      </h2>
-                      <p className="text-base md:text-xl text-slate-400 max-w-3xl mx-auto mt-4 md:mt-6 leading-relaxed">
-                        MiJory LLC operates a vertically integrated portfolio bridging physical health optimization with a highly scalable digital data moat. Our structure is designed to capture margin at every step while generating cryptographically sealed data assets.
-                      </p>
-                    </div>
-
-                    <div className="py-8 border-y border-slate-800">
-                      <h3 className="text-center text-xl font-bold text-slate-300 mb-2">A Unified Ecosystem</h3>
-                      <p className="text-center text-sm text-slate-500 mb-6 md:mb-8">Tap a subsidiary below to view deep-dive analytics.</p>
-                      
-                      <div className="diagram-container">
-                          <div className="diagram-column">
-                              <button className="node group" onClick={() => setActiveTab('rightroots')}><Leaf className="w-5 h-5 text-emerald-400 group-hover:animate-bounce"/> Right Roots</button>
-                              <button className="node group" onClick={() => setActiveTab('biotide')}><Dna className="w-5 h-5 text-indigo-400 group-hover:animate-bounce"/> BioTide</button>
-                              <button className="node group" onClick={() => setActiveTab('vitalis')}><Activity className="w-5 h-5 text-amber-500 group-hover:animate-bounce"/> Vitalis Longevity</button>
-                          </div>
-                          
-                          <div className="md:hidden flex justify-center text-slate-700 py-1"><ArrowDown className="w-6 h-6"/></div>
-
-                          <div className="node node-center text-center">
-                              <span className="font-extrabold tracking-tight text-white">MiJory LLC</span>
-                              <span className="text-xs md:text-sm font-normal text-slate-400">Holding & Incubation</span>
-                          </div>
-
-                          <div className="md:hidden flex justify-center text-slate-700 py-1"><ArrowDown className="w-6 h-6"/></div>
-
-                          <div className="diagram-column">
-                              <button className="node group" onClick={() => setActiveTab('trakpath')}><QrCode className="w-5 h-5 text-blue-400 group-hover:animate-bounce"/> TrakPath</button>
-                              <button className="node group" onClick={() => setActiveTab('sentynl')}><CloudRain className="w-5 h-5 text-slate-300 group-hover:animate-bounce"/> Sentynl</button>
-                          </div>
-                      </div>
-                    </div>
-
-                    <div className="relative p-5 md:p-8 rounded-2xl bg-slate-900 border border-slate-800 overflow-hidden shadow-2xl">
-                      <div className="absolute top-0 right-0 p-32 bg-blue-500/5 rounded-full blur-3xl pointer-events-none"></div>
-                      <h3 className="text-xl md:text-2xl font-bold text-white mb-6 md:mb-8 text-center">The Cross-Vertical Data Monetization Loop</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-4 items-center">
-                        <div className="md:col-span-1 space-y-3">
-                          <div className="p-3 md:p-4 rounded-xl bg-slate-800/50 border border-slate-700 flex flex-col items-center text-center gap-2 transition-transform hover:scale-105 cursor-pointer" onClick={() => setActiveTab('rightroots')}>
-                            <Leaf className="w-5 h-5 md:w-6 md:h-6 text-green-400" />
-                            <span className="text-xs md:text-sm font-semibold">Right Roots Consumers</span>
-                          </div>
-                          <div className="p-3 md:p-4 rounded-xl bg-slate-800/50 border border-slate-700 flex flex-col items-center text-center gap-2 transition-transform hover:scale-105 cursor-pointer" onClick={() => setActiveTab('vitalis')}>
-                            <Activity className="w-5 h-5 md:w-6 md:h-6 text-amber-500" />
-                            <span className="text-xs md:text-sm font-semibold">Vitalis / BioTide Clinics</span>
-                          </div>
+                {activeTab === 'ecosystem' && (
+                  <div className="space-y-16 animate-in fade-in duration-700 text-center">
+                    <h2 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight">Empowering Innovation <br/>Across <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">Industries</span></h2>
+                    
+                    <div className="diagram-container">
+                        <div className="diagram-column">
+                            <button className="node group" onClick={() => setActiveTab('rightroots')}><Leaf className="w-5 h-5 text-emerald-400 group-hover:animate-bounce"/> Right Roots</button>
+                            <button className="node group" onClick={() => setActiveTab('biotide')}><Dna className="w-5 h-5 text-indigo-400 group-hover:animate-bounce"/> BioTide</button>
+                            <button className="node group" onClick={() => setActiveTab('vitalis')}><Activity className="w-5 h-5 text-cyan-400 group-hover:animate-bounce"/> Vitalis Longevity</button>
                         </div>
-                        <div className="hidden md:flex justify-center text-slate-600"><ArrowRight className="w-8 h-8 animate-pulse" /></div>
-                        <div className="md:hidden flex justify-center text-slate-600 py-1"><ArrowDown className="w-6 h-6 animate-pulse" /></div>
-                        <div className="md:col-span-1 p-5 md:p-6 rounded-xl bg-blue-900/20 border border-blue-500/30 flex flex-col items-center text-center gap-2 relative transition-transform hover:scale-105 cursor-pointer" onClick={() => setActiveTab('trakpath')}>
-                          <QrCode className="w-8 h-8 md:w-10 md:h-10 text-blue-400" />
-                          <h4 className="font-bold text-blue-300 text-sm md:text-base">TrakPath QR</h4>
-                          <p className="text-[10px] md:text-xs text-slate-400">Consumers & Clinics scan for compliance, purity & provenance.</p>
+                        <div className="node node-center">
+                            <span className="font-extrabold text-white">MiJory LLC</span>
                         </div>
-                        <div className="hidden md:flex justify-center text-slate-600"><ArrowRight className="w-8 h-8 animate-pulse" /></div>
-                        <div className="md:hidden flex justify-center text-slate-600 py-1"><ArrowDown className="w-6 h-6 animate-pulse" /></div>
-                        <div className="md:col-span-1 p-5 md:p-6 rounded-xl bg-slate-800/60 border border-slate-500/30 flex flex-col items-center text-center gap-2 relative transition-transform hover:scale-105 cursor-pointer" onClick={() => setActiveTab('sentynl')}>
-                          <CloudRain className="w-8 h-8 md:w-10 md:h-10 text-slate-300" />
-                          <h4 className="font-bold text-slate-200 text-sm md:text-base">Sentynl Vault</h4>
-                          <p className="text-[10px] md:text-xs text-slate-400">App harvests hyper-local weather & logs supply chain data.</p>
+                        <div className="diagram-column">
+                            <button className="node group" onClick={() => setActiveTab('trakpath')}><QrCode className="w-5 h-5 text-blue-400 group-hover:animate-bounce"/> TrakPath</button>
+                            <button className="node group" onClick={() => setActiveTab('sentynl')}><CloudRain className="w-5 h-5 text-slate-300 group-hover:animate-bounce"/> Sentynl</button>
                         </div>
-                      </div>
-                      <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-slate-800 text-center relative z-10">
-                        <p className="text-xs md:text-sm uppercase tracking-widest text-slate-500 font-bold mb-3 md:mb-4">Value Extraction & The Trust Moat</p>
-                        <div className="flex flex-wrap justify-center gap-2 md:gap-3">
-                          <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-slate-800/80 border border-slate-700 text-xs md:text-sm text-slate-200 font-medium shadow-sm flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-blue-400"/> Trust in Data</span>
-                          <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-slate-800/80 border border-slate-700 text-xs md:text-sm text-slate-200 font-medium shadow-sm flex items-center gap-1.5"><Dna className="w-3.5 h-3.5 text-indigo-400"/> Product Quality</span>
-                          <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-slate-800/80 border border-slate-700 text-xs md:text-sm text-slate-200 font-medium shadow-sm flex items-center gap-1.5"><QrCode className="w-3.5 h-3.5 text-cyan-400"/> Supply Chain Tracking</span>
-                          <span className="px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-slate-800/80 border border-slate-700 text-xs md:text-sm text-slate-200 font-medium shadow-sm flex items-center gap-1.5"><Network className="w-3.5 h-3.5 text-amber-400"/> Regulatory Compliance</span>
-                        </div>
-                      </div>
                     </div>
                   </div>
+                )}
 
-                /* --- LEADERSHIP TEAM TAB --- */
-                ) : activeTab === 'team' ? (
+                {activeTab === 'team' && (
                   <div className="space-y-12 animate-in fade-in zoom-in-95 duration-500">
                       <div className="text-center space-y-4 mb-12 pt-4 md:pt-6">
                           <div className="inline-flex items-center justify-center p-3 bg-blue-900/30 border border-blue-500/50 rounded-full mb-4">
@@ -491,30 +606,20 @@
                           </div>
                       </div>
                   </div>
+                )}
 
-                /* --- FUNDING TAB --- */
-                ) : activeTab === 'funding' ? (
-                  <div className="space-y-8 md:space-y-12 animate-in fade-in zoom-in-95 duration-500">
-                    <div className="text-center space-y-3 md:space-y-4 mb-8 pt-2 md:pt-6">
-                      <div className="inline-flex items-center justify-center p-3 bg-emerald-900/30 border border-emerald-500/50 rounded-full mb-2 md:mb-4"><DollarSign className="w-8 h-8 md:w-10 md:h-10 text-emerald-400" /></div>
-                      <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 tracking-tight">$1.5M Series Seed</h2>
-                      <p className="text-base md:text-xl text-slate-300 font-light max-w-2xl mx-auto">We are one of the rare seed series companies that possess <span className="font-bold text-white">real traction and revenue</span>, not just ideas.</p>
-                    </div>
-                    
-                    {/* Animated Funding Progress Bar */}
+                {activeTab === 'funding' && (
+                  <div className="text-center">
+                    <h2 className="text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">$1.5M Series Seed</h2>
                     <FundingBar current={CURRENT_RAISED} target={TARGET_RAISE} />
-
-                    <div className="p-6 md:p-8 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-600 text-center space-y-4 shadow-2xl max-w-4xl mx-auto">
-                       <h3 className="text-xl md:text-2xl font-bold text-white">Ready to explore the data room?</h3>
-                       <p className="text-sm md:text-base text-slate-400 mb-4 md:mb-6">Contact our executive team for investment inquiries.</p>
-                       <button onClick={() => setContactModalOpen(true)} className="w-full md:w-auto px-8 py-4 text-base md:text-lg font-bold rounded-lg transition-all border bg-blue-600/20 text-blue-400 border-blue-500/50 hover:bg-blue-600/40">
-                          View Executive Contacts
-                       </button>
-                    </div>
                   </div>
+                )}
 
-                /* --- PORTFOLIO DYNAMIC TABS --- */
-                ) : (
+                {activeTab === 'vitalis' && <VitalisDeck />}
+                {activeTab === 'biotide' && <BiotideDeck />}
+
+                {/* --- FULL STANDARD PORTFOLIO VIEWS RESTORED --- */}
+                {['trakpath', 'sentynl', 'rightroots'].includes(activeTab) && (
                   <div className="animate-in fade-in zoom-in-95 duration-500 space-y-6 md:space-y-8 pt-2 md:pt-4">
                     <div className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-5 pb-5 border-b ${portfolio[activeTab].theme.borderMain}`}>
                        <div className="flex items-center gap-4 md:gap-6">
@@ -533,6 +638,7 @@
                            </a>
                        )}
                     </div>
+                    
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
                       <div className="lg:col-span-2 space-y-6 md:space-y-8">
                         <section className={`p-5 md:p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-lg`}>
@@ -543,6 +649,7 @@
                           <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText}`}><Network className="w-5 h-5" /> Ecosystem Synergy</h3>
                           <p className={textStyles.body}>{portfolio[activeTab].synergy}</p>
                         </section>
+                        
                         <section className={`p-5 md:p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-xl overflow-hidden`}>
                           <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText} mb-4 md:mb-6`}><PieChart className="w-5 h-5" /> Analytics & Market Edge</h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -562,6 +669,7 @@
                           </div>
                         </section>
                       </div>
+                      
                       <div className="space-y-5 md:space-y-6">
                         <div className={`p-5 md:p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-lg`}>
                           <h4 className={textStyles.metricLabel}>Current Traction</h4>
@@ -577,18 +685,18 @@
                 )}
               </main>
 
-              {/* Standard Footer */}
-              <footer className="w-full text-center py-6 border-t border-slate-800/50 mt-auto pb-28 md:pb-6">
-                  <p className="text-slate-500 text-sm font-medium">&copy; 2026 MiJory LLC. All rights reserved.</p>
-              </footer>
-
-              {/* Z-40 Mobile Footer NavBar */}
-              <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-slate-800 p-3 flex overflow-x-auto gap-2 z-40 hide-scrollbar shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
-                 <button onClick={() => setActiveTab('ecosystem')} className={`px-5 py-3 whitespace-nowrap text-sm font-bold rounded-xl border shadow-sm active:scale-95 transition-transform ${activeTab === 'ecosystem' ? 'bg-slate-800 text-white border-slate-600' : 'bg-slate-900/80 border-slate-800 text-slate-400'}`}>Overview</button>
-                 <button onClick={() => setActiveTab('team')} className={`px-5 py-3 whitespace-nowrap text-sm font-bold rounded-xl border shadow-sm active:scale-95 transition-transform ${activeTab === 'team' ? 'bg-slate-800 text-white border-slate-600' : 'bg-slate-900/80 border-slate-800 text-slate-400'}`}>Leadership</button>
-                  {Object.values(portfolio).map((company) => (
-                    <button key={company.id} onClick={() => setActiveTab(company.id)} className={`px-5 py-3 whitespace-nowrap text-sm font-bold rounded-xl border shadow-sm active:scale-95 transition-transform ${activeTab === company.id ? company.theme.tabColor : 'bg-slate-900/80 border-slate-800 text-slate-400'}`}>{company.name}</button>
-                  ))}
+              <div className="md:hidden fixed bottom-0 left-0 right-0 bg-slate-950 border-t border-slate-800 p-3 flex flex-col gap-3 z-40 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
+                  <div className="flex justify-center items-center gap-1.5 w-full">
+                      <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                      <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">SOC 2 Audit Ready Architecture</span>
+                  </div>
+                  <div className="flex overflow-x-auto gap-2 hide-scrollbar">
+                     <button onClick={() => setActiveTab('ecosystem')} className={`px-4 py-3 whitespace-nowrap text-sm font-bold rounded-xl border ${activeTab === 'ecosystem' ? 'bg-slate-800 text-white' : 'bg-slate-900/80 text-slate-400 border-slate-800'}`}>Overview</button>
+                     <button onClick={() => setActiveTab('team')} className={`px-4 py-3 whitespace-nowrap text-sm font-bold rounded-xl border ${activeTab === 'team' ? 'bg-slate-800 text-white' : 'bg-slate-900/80 text-slate-400 border-slate-800'}`}>Leadership</button>
+                      {Object.values(portfolio).map((company) => (
+                        <button key={company.id} onClick={() => setActiveTab(company.id)} className={`px-4 py-3 whitespace-nowrap text-sm font-bold rounded-xl border ${activeTab === company.id ? company.theme.tabColor : 'bg-slate-900/80 text-slate-400 border-slate-800'}`}>{company.name}</button>
+                      ))}
+                  </div>
               </div>
             </div>
           );
