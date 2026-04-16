@@ -52,10 +52,20 @@
         
         body.modal-open { overflow: hidden; }
 
-        /* Custom Animations for Decks */
+        /* Custom Animations */
         @keyframes float { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } 100% { transform: scale(1); opacity: 1; } }
         .animate-float { animation: float 2s infinite; }
         .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        @keyframes shimmer { 100% { transform: translateX(200%); } }
+        .animate-shimmer { animation: shimmer 1.5s infinite; }
+
+        /* Pulsing Glow for CTAs */
+        @keyframes pulse-blue-glow { 0% { box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); border-color: rgba(56, 189, 248, 0.3); } 50% { box-shadow: 0 0 35px rgba(56, 189, 248, 0.8); border-color: rgba(56, 189, 248, 0.8); } 100% { box-shadow: 0 0 10px rgba(56, 189, 248, 0.4); border-color: rgba(56, 189, 248, 0.3); } }
+        .animate-pulse-blue { animation: pulse-blue-glow 2s infinite ease-in-out; }
+
+        @keyframes pulse-emerald-glow { 0% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); border-color: rgba(16, 185, 129, 0.3); } 50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.8); border-color: rgba(16, 185, 129, 0.8); } 100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.4); border-color: rgba(16, 185, 129, 0.3); } }
+        .animate-pulse-emerald { animation: pulse-emerald-glow 2s infinite ease-in-out; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-200 antialiased selection:bg-blue-500/30">
@@ -403,10 +413,18 @@
             { id: 8, name: "Pete Anewalt", title: "Strategic Advisor", image: "images/pete.jpg", linkedin: "https://linkedin.com/in/peteranewalt" }
           ];
 
-          // --- FULL PORTFOLIO DATA RESTORED (Links, synergies, infographics) ---
+          // --- FULL PORTFOLIO DATA RESTORED WITH HIGH-PROMINENCE BILLBOARD LINKS ---
           const portfolio = {
             trakpath: {
-              id: 'trakpath', name: 'TrakPath', tagline: 'Dynamic Supply Chain & Digital Twins', icon: <QrCode className="w-8 h-8" />, link: { url: "https://trakpath.mijory.com", text: "Explore TrakPath Site \u2192" },
+              id: 'trakpath', name: 'TrakPath', tagline: 'Dynamic Supply Chain & Digital Twins', icon: <QrCode className="w-8 h-8" />, 
+              link: { 
+                  url: "https://trakpath.mijory.com", 
+                  text: "THE TRAKPATH REVOLUTION", // Punchier text
+                  type: "billboard", // Special type for main display
+                  pulseColor: "animate-pulse-blue",
+                  gradient: "from-blue-600 via-cyan-500 to-blue-500",
+                  logo: <QrCode className="w-8 h-8 md:w-10 md:h-10 text-white" />
+              },
               description: 'The intelligence layer and "nerve center" of the Mijory ecosystem. TrakPath’s value proposition is simple but revolutionary: "Keep the label fixed, keep the product state live, and keep the audit trail immutable."',
               synergy: 'Provides the underlying trust ledger for BioTide and Right Roots. Every consumer scan creates a verified touchpoint, bridging physical products to digital data assets.',
               advantages: ['Combines speed of operational DB with append-only blockchain.', 'More usable than "blockchain-first" systems.', 'Lower relabeling cost, faster operations, better audit readiness.'],
@@ -430,7 +448,15 @@
             biotide: { id: 'biotide', name: 'BioTide', theme: { tabColor: "bg-indigo-900/20 text-indigo-400 border-indigo-500/30" } },
             vitalis: { id: 'vitalis', name: 'Vitalis Longevity', theme: { tabColor: "bg-cyan-900/20 text-cyan-400 border-cyan-500/30" } },
             rightroots: {
-              id: 'rightroots', name: 'Right Roots', tagline: 'Functional Beverages & Nutraceuticals', icon: <Leaf className="w-8 h-8" />, link: { url: "https://kavakazees.com/", text: "Visit Kavakazees Website \u2192" },
+              id: 'rightroots', name: 'Right Roots', tagline: 'Functional Beverages & Nutraceuticals', icon: <Leaf className="w-8 h-8" />, 
+              link: { 
+                  url: "https://kavakazees.com/", 
+                  text: "Shop Kava Kazees Now", // Action oriented text
+                  type: "billboard",
+                  pulseColor: "animate-pulse-emerald",
+                  gradient: "from-emerald-600 via-green-500 to-emerald-500",
+                  logo: <Leaf className="w-8 h-8 md:w-10 md:h-10 text-white" />
+              },
               description: 'Right Roots transcends traditional beverages by offering functional social beverages (like Kava Kazees) and fine-tuned nutraceutical supplements.',
               synergy: 'Consumer products feature TrakPath QR codes. Scans verify purity and drive app adoption, fueling Sentynl\'s data collection.',
               advantages: ['Proprietary blends engineered for specific outcomes', 'First-mover advantage in functional social beverages', 'TrakPath-backed transparency proving purity'],
@@ -618,9 +644,10 @@
                 {activeTab === 'vitalis' && <VitalisDeck />}
                 {activeTab === 'biotide' && <BiotideDeck />}
 
-                {/* --- FULL STANDARD PORTFOLIO VIEWS RESTORED --- */}
                 {['trakpath', 'sentynl', 'rightroots'].includes(activeTab) && (
-                  <div className="animate-in fade-in zoom-in-95 duration-500 space-y-6 md:space-y-8 pt-2 md:pt-4">
+                  <div className="animate-in fade-in zoom-in-95 duration-500 space-y-6 md:space-y-8 pt-2 md:pt-4 relative">
+                    
+                    {/* Standard Header (Link removed from here for Billboard tabs) */}
                     <div className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-5 pb-5 border-b ${portfolio[activeTab].theme.borderMain}`}>
                        <div className="flex items-center gap-4 md:gap-6">
                            <div className={`p-3 md:p-4 rounded-xl border shrink-0 ${portfolio[activeTab].theme.iconBox}`}>
@@ -631,15 +658,44 @@
                              <p className={`text-sm md:text-lg font-medium opacity-90 mt-1 ${portfolio[activeTab].theme.primaryText}`}>{portfolio[activeTab].tagline}</p>
                            </div>
                        </div>
-                       {portfolio[activeTab].link && (
-                           <a href={portfolio[activeTab].link.url} target="_blank" rel="noopener noreferrer" 
-                              className={`w-full md:w-auto justify-center px-6 py-3.5 rounded-xl font-bold transition-all whitespace-nowrap bg-slate-900 border ${portfolio[activeTab].theme.borderAccent} ${portfolio[activeTab].theme.primaryText} hover:bg-slate-800 shadow-lg flex items-center gap-2`}>
-                               {portfolio[activeTab].link.text}
-                           </a>
-                       )}
                     </div>
                     
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+                    {/* --- NEW HIGH-PROMINENCE BILLBOARD CALL-TO-ACTION --- */}
+                    {portfolio[activeTab].link && portfolio[activeTab].link.type === 'billboard' && (
+                        <div className={`w-full p-6 md:p-10 rounded-3xl border ${portfolio[activeTab].theme.borderAccent} bg-slate-900 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 md:gap-10`}>
+                            {/* Background decoration */}
+                            <div className={`absolute inset-0 bg-gradient-to-r ${portfolio[activeTab].link.gradient} opacity-5 blur-3xl`}></div>
+                            <div className="absolute -left-10 -bottom-10 w-40 h-40 border-2 border-white/5 rounded-full"></div>
+                            
+                            <div className="relative z-10 flex flex-col items-center md:items-start text-center md:text-left gap-3">
+                                <SectionTag text="External Launchpad" colorClass={portfolio[activeTab].theme.primaryText} />
+                                <h3 className="font-jakarta text-3xl md:text-4xl font-extrabold tracking-tight text-white m-0">
+                                    {portfolio[activeTab].id === 'trakpath' ? 'EXPERIENCE' : 'DISCOVER'} THE <br/>LIVE <span className={portfolio[activeTab].theme.gradientText}>PLATFORM</span>
+                                </h3>
+                                <p className="text-sm md:text-base text-slate-400 mt-1 max-w-lg">Visit the dedicated website to see dynamic data trails and explore full functionality.</p>
+                            </div>
+
+                            {/* THE MASSSIVE, PULSING BUTTON */}
+                            <a href={portfolio[activeTab].link.url} target="_blank" rel="noopener noreferrer" 
+                               className={`w-full md:w-auto relative group flex items-center justify-center px-8 md:px-12 py-5 md:py-6 rounded-2xl font-extrabold text-white bg-gradient-to-r ${portfolio[activeTab].link.gradient} overflow-hidden transition-all transform hover:scale-[1.03] active:scale-95 shadow-xl ${portfolio[activeTab].link.pulseColor}`}>
+                               
+                               <div className="absolute inset-0 bg-white/20 -skew-x-12 -translate-x-full group-hover:animate-shimmer"></div>
+                               
+                               <div className="flex items-center gap-4 relative z-10">
+                                   {portfolio[activeTab].link.logo && (
+                                       <div className="bg-white/20 p-2 md:p-2.5 rounded-xl shadow-inner">
+                                           {portfolio[activeTab].link.logo}
+                                       </div>
+                                   )}
+                                   <span className="text-lg md:text-2xl tracking-wide font-black drop-shadow-md">{portfolio[activeTab].link.text}</span>
+                                   <svg className="w-6 h-6 ml-1 group-hover:translate-x-1.5 transition-transform drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 12h14M12 5l7 7-7 7"></path></svg>
+                               </div>
+                            </a>
+                        </div>
+                    )}
+                    
+                    {/* Content Grid (Description, Analytics, etc.) */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 pt-4">
                       <div className="lg:col-span-2 space-y-6 md:space-y-8">
                         <section className={`p-5 md:p-6 rounded-2xl bg-slate-900 border ${portfolio[activeTab].theme.borderMain} shadow-lg`}>
                           <h3 className={`${textStyles.sectionTitle} ${portfolio[activeTab].theme.primaryText}`}>Company Overview</h3>
